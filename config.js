@@ -1,7 +1,7 @@
 // API Configuration
 const API_CONFIG = {
     // Railway backend URL - BURADA Railway domain'inizi yazın
-    API_BASE_URL: 'https://eievdanismanligi-backend.railway.app',
+    API_BASE_URL: 'https://eievdanismanligi-production.up.railway.app',
     
     // Development için
     DEV_API_URL: 'http://localhost:3000',

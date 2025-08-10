@@ -104,6 +104,9 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server ${PORT} portunda çalışıyor`);
+const HOST = process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost';
+
+app.listen(PORT, HOST, () => {
+    console.log(`Server ${HOST}:${PORT} adresinde çalışıyor`);
+    console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
 }); 

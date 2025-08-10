@@ -103,10 +103,11 @@ app.use((err, req, res, next) => {
     res.status(500).json({ message: 'Bir hata oluştu!' });
 });
 
-const PORT = process.env.PORT || 3000;
-const HOST = process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost';
+const PORT = process.env.PORT || process.env.RAILWAY_PORT || 3000;
+const HOST = '0.0.0.0';
 
 app.listen(PORT, HOST, () => {
     console.log(`Server ${HOST}:${PORT} adresinde çalışıyor`);
     console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`Railway Port: ${process.env.RAILWAY_PORT || 'not set'}`);
 }); 

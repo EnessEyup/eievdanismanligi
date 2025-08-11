@@ -16,5 +16,11 @@ const API_CONFIG = {
     }
 };
 
+// Global API function - tüm fetch çağrılarında kullan
+window.apiCall = function(endpoint, options = {}) {
+    const url = `${API_CONFIG.getApiUrl()}${endpoint}`;
+    return fetch(url, options);
+};
+
 // Global olarak kullanım için
 window.API_CONFIG = API_CONFIG;

@@ -56,7 +56,7 @@ async function checkAuthStatus() {
     
     if (token) {
         try {
-            const response = await fetch('/api/auth/me', {
+            const response = await apiCall('/api/auth/me', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -206,7 +206,7 @@ async function handleLogin(e) {
     const password = document.getElementById('loginPassword').value;
     
     try {
-        const response = await fetch('/api/auth/login', {
+        const response = await apiCall('/api/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -244,7 +244,7 @@ async function handleRegister(e) {
     const password = document.getElementById('registerPassword').value;
     
     try {
-        const response = await fetch('/api/auth/register', {
+        const response = await apiCall('/api/auth/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -316,7 +316,7 @@ async function loadDashboardData() {
 async function loadStatistics() {
     try {
         const token = localStorage.getItem('token');
-        const response = await fetch('/api/rent/statistics', {
+        const response = await apiCall('/api/rent/statistics', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -343,7 +343,7 @@ function updateStatistics(stats) {
 async function loadProperties() {
     try {
         const token = localStorage.getItem('token');
-        const response = await fetch('/api/property/my-properties', {
+        const response = await apiCall('/api/property/my-properties', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -440,7 +440,7 @@ async function handleAddProperty(e) {
     
     try {
         const token = localStorage.getItem('token');
-        const response = await fetch('/api/property/add-property', {
+        const response = await apiCall('/api/property/add-property', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -475,7 +475,7 @@ async function deleteProperty(propertyId) {
     
     try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`/api/property/delete-property/${propertyId}`, {
+        const response = await apiCall(`/api/property/delete-property/${propertyId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -500,7 +500,7 @@ async function deleteProperty(propertyId) {
 async function loadPayments() {
     try {
         const token = localStorage.getItem('token');
-        const response = await fetch('/api/rent/my-payments', {
+        const response = await apiCall('/api/rent/my-payments', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -590,7 +590,7 @@ async function handleAddPayment(e) {
     
     try {
         const token = localStorage.getItem('token');
-        const response = await fetch('/api/rent/create-payment', {
+        const response = await apiCall('/api/rent/create-payment', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -658,7 +658,7 @@ async function handleEditProperty(e) {
     
     try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`/api/property/update-property/${propertyId}`, {
+        const response = await apiCall(`/api/property/update-property/${propertyId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -727,7 +727,7 @@ async function handleEditPayment(e) {
     
     try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`/api/rent/update-payment/${paymentId}`, {
+        const response = await apiCall(`/api/rent/update-payment/${paymentId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -760,7 +760,7 @@ async function togglePaymentStatus(propertyId, paymentType, status) {
         const currentYear = currentDate.getFullYear();
         
         // Bu ay için ödeme kaydı var mı kontrol et
-        const response = await fetch(`/api/rent/toggle-payment-status`, {
+        const response = await apiCall(`/api/rent/toggle-payment-status`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -825,7 +825,7 @@ async function loadPaymentsHistory() {
         const token = localStorage.getItem('token');
         const year = document.getElementById('paymentYear').value;
         
-        const response = await fetch(`/api/rent/property-payments/${currentPropertyId}?year=${year}`, {
+        const response = await apiCall(`/api/rent/property-payments/${currentPropertyId}?year=${year}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -891,7 +891,7 @@ async function changePaymentStatus(month, paymentType, status) {
     try {
         const token = localStorage.getItem('token');
         const year = document.getElementById('paymentYear').value;
-        const response = await fetch(`/api/rent/toggle-payment-status`, {
+        const response = await apiCall(`/api/rent/toggle-payment-status`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -927,7 +927,7 @@ async function generateMonthlyPayments() {
         const currentMonth = currentDate.getMonth() + 1;
         const currentYear = currentDate.getFullYear();
         
-        const response = await fetch(`/api/rent/generate-monthly-payments`, {
+        const response = await apiCall(`/api/rent/generate-monthly-payments`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -960,7 +960,7 @@ async function exportPropertyPayments() {
         const token = localStorage.getItem('token');
         const year = document.getElementById('paymentYear').value;
         
-        const response = await fetch(`/api/rent/export-property-payments/${currentPropertyId}?year=${year}`, {
+        const response = await apiCall(`/api/rent/export-property-payments/${currentPropertyId}?year=${year}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -1031,7 +1031,7 @@ async function handleAddReminder(e) {
     };
     try {
         const token = localStorage.getItem('token');
-        const response = await fetch('/api/reminders/add-reminder', {
+        const response = await apiCall('/api/reminders/add-reminder', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -1057,7 +1057,7 @@ async function handleAddReminder(e) {
 async function viewReminders(propertyId) {
     try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`/api/reminders/property-reminders/${propertyId}`, {
+        const response = await apiCall(`/api/reminders/property-reminders/${propertyId}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -1187,7 +1187,7 @@ async function sendTestReminder(reminderId) {
     
     try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`/api/reminders/send-test-reminder/${reminderId}`, {
+        const response = await apiCall(`/api/reminders/send-test-reminder/${reminderId}`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -1213,7 +1213,7 @@ async function deleteReminder(reminderId) {
     
     try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`/api/reminders/delete-reminder/${reminderId}`, {
+        const response = await apiCall(`/api/reminders/delete-reminder/${reminderId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -1243,7 +1243,7 @@ async function deletePayment(paymentId) {
     
     try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`/api/rent/delete-payment/${paymentId}`, {
+        const response = await apiCall(`/api/rent/delete-payment/${paymentId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -1268,7 +1268,7 @@ async function deletePayment(paymentId) {
 async function exportData() {
     try {
         const token = localStorage.getItem('token');
-        const response = await fetch('/api/rent/export', {
+        const response = await apiCall('/api/rent/export', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

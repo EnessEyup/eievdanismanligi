@@ -10,7 +10,9 @@ router.get('/google', passport.authenticate('google', {
 
 // Google OAuth callback
 router.get('/google/callback', passport.authenticate('google', { 
-    failureRedirect: '/pages/tracking.html?error=google_auth_failed',
+    failureRedirect: process.env.NODE_ENV === 'production' 
+        ? 'https://eievdanismanligi.com/pages/tracking.html?error=google_auth_failed'
+        : '/pages/tracking.html?error=google_auth_failed',
     session: false 
 }), (req, res) => {
     try {
@@ -36,11 +38,18 @@ router.get('/google/callback', passport.authenticate('google', {
             profilePicture: req.user.profilePicture
         });
 
-        // Tracking sayfasına yönlendir
-        res.redirect(`/pages/tracking.html?token=${token}&userInfo=${encodeURIComponent(userInfo)}`);
+        // Frontend domain'e yönlendir
+        const frontendUrl = process.env.NODE_ENV === 'production' 
+            ? 'https://eievdanismanligi.com'
+            : 'http://localhost:3000';
+        
+        res.redirect(`${frontendUrl}/pages/tracking.html?token=${token}&userInfo=${encodeURIComponent(userInfo)}`);
     } catch (error) {
         console.error('Google auth callback error:', error);
-        res.redirect('/pages/tracking.html?error=token_creation_failed');
+        const frontendUrl = process.env.NODE_ENV === 'production' 
+            ? 'https://eievdanismanligi.com'
+            : 'http://localhost:3000';
+        res.redirect(`${frontendUrl}/pages/tracking.html?error=token_creation_failed`);
     }
 });
 

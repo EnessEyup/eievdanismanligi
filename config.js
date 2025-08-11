@@ -19,8 +19,12 @@ const API_CONFIG = {
 // Global API function - tüm fetch çağrılarında kullan
 window.apiCall = function(endpoint, options = {}) {
     const url = `${API_CONFIG.getApiUrl()}${endpoint}`;
+    console.log('apiCall called with:', endpoint, 'Full URL:', url);
     return fetch(url, options);
 };
+
+// Debug: Check if apiCall is loaded
+console.log('config.js loaded, apiCall defined:', typeof window.apiCall);
 
 // Global olarak kullanım için
 window.API_CONFIG = API_CONFIG;

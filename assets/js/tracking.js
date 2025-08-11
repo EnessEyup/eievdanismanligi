@@ -1312,3 +1312,29 @@ function showToast(message, type = 'success') {
         toast.classList.remove('show');
     }, 3000);
 }
+
+// Modal click outside to close functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all modals
+    const modals = document.querySelectorAll('.modal');
+    
+    modals.forEach(modal => {
+        modal.addEventListener('click', function(e) {
+            // If click is on the modal backdrop (not the modal-content), close it
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    });
+    
+    // Also add ESC key support
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            modals.forEach(modal => {
+                if (modal.style.display === 'block' || window.getComputedStyle(modal).display === 'block') {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+    });
+});

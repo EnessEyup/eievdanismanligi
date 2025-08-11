@@ -25,8 +25,8 @@ const app = express();
 // Middleware
 app.use(cors({
     origin: [
-        'https://eievdanismanligi.com.tr',
-        'https://www.eievdanismanligi.com.tr',
+        'https://eievdanismanligi.com',
+        'https://www.eievdanismanligi.com',
         'https://eievdanismanligi.vercel.app',
         'http://localhost:3000'
     ],

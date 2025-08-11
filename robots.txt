@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://eievdanismanligi.com.tr/sitemap.xml
+Sitemap: https://eievdanismanligi.com/sitemap.xml
 
 # Disallow admin areas (if any)
 Disallow: /admin/

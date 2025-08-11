@@ -281,7 +281,9 @@ async function handleRegister(e) {
 // Google OAuth login
 function loginWithGoogle() {
     console.log('loginWithGoogle called');
-    window.location.href = '/auth/google';
+    const backendUrl = API_CONFIG.getApiUrl();
+    console.log('Redirecting to Google OAuth:', `${backendUrl}/auth/google`);
+    window.location.href = `${backendUrl}/auth/google`;
 }
 
 // Logout

@@ -4,9 +4,13 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
 const session = require('express-session');
+const cron = require('node-cron');
 
 // Passport configuration
 const passport = require('./config/passport');
+
+// Services
+const reminderService = require('./services/reminderService');
 
 // Routes
 const authRoutes = require('./routes/auth');
@@ -103,6 +107,38 @@ app.use((err, req, res, next) => {
     res.status(500).json({ message: 'Bir hata oluştu!' });
 });
 
+// Cron Job - Her gün saat 12:00'da hatırlatıcıları kontrol et ve gönder
+cron.schedule('0 12 * * *', async () => {
+    console.log('🔔 Günlük hatırlatıcı kontrolü başlatılıyor... (Saat: 12:00)');
+    try {
+        const result = await reminderService.checkAndSendReminders();
+        if (result.success) {
+            console.log(`✅ Hatırlatıcı kontrolü tamamlandı! Toplam: ${result.total}, Başarılı: ${result.successCount}, Hatalı: ${result.errorCount}`);
+        } else {
+            console.error('❌ Hatırlatıcı kontrolü hatası:', result.error);
+        }
+    } catch (error) {
+        console.error('❌ Cron job hatası:', error);
+    }
+}, {
+    timezone: 'Europe/Istanbul'
+});
+
+// Development ortamında test için - Her 5 dakikada bir çalışır (sadece NODE_ENV=development ise)
+if (process.env.NODE_ENV === 'development') {
+    cron.schedule('*/5 * * * *', async () => {
+        console.log('🔔 [TEST] 5 dakikalık test hatırlatıcı kontrolü...');
+        try {
+            const result = await reminderService.checkAndSendReminders();
+            console.log(`[TEST] Sonuç: ${result.total} toplam, ${result.successCount} başarılı`);
+        } catch (error) {
+            console.error('[TEST] Hata:', error);
+        }
+    }, {
+        timezone: 'Europe/Istanbul'
+    });
+}
+
 const PORT = process.env.PORT || 8080;
 console.log('Port:', PORT);
 console.log('Environment:', process.env.NODE_ENV);
@@ -110,4 +146,8 @@ console.log('Environment:', process.env.NODE_ENV);
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server ${PORT} portunda çalışıyor`);
     console.log(`Server listening on http://0.0.0.0:${PORT}`);
+    console.log('🔔 Cron job aktif: Her gün saat 12:00\'da hatırlatıcı kontrolü');
+    if (process.env.NODE_ENV === 'development') {
+        console.log('🧪 Development modu: 5 dakikalık test cron job aktif');
+    }
 }); 

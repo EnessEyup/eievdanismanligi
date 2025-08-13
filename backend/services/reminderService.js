@@ -6,34 +6,69 @@ class ReminderService {
     // Bekleyen hatırlatıcıları kontrol et ve mail gönder
     async checkAndSendReminders() {
         try {
-            console.log('Hatırlatıcı kontrolü başlatılıyor...');
+            console.log('🔍 Hatırlatıcı kontrolü başlatılıyor...');
             const today = new Date();
             const todayDay = today.getDate();
+            const currentMonth = today.getMonth() + 1;
+            const currentYear = today.getFullYear();
+            
+            console.log(`📅 Kontrol tarihi: ${today.toLocaleDateString('tr-TR')} (Gün: ${todayDay})`);
+
+            // Bugün gönderilmesi gereken hatırlatıcıları bul
             const pendingReminders = await Reminder.find({
                 isActive: true,
-                reminderDays: todayDay
+                $or: [
+                    { reminderDays: todayDay }, // Eski format uyumluluğu
+                    { 
+                        $expr: {
+                            $eq: [{ $dayOfMonth: "$nextSendDate" }, todayDay]
+                        }
+                    }
+                ]
             }).populate('propertyId');
-            console.log(`${pendingReminders.length} adet bekleyen hatırlatıcı bulundu`);
+
+            console.log(`📊 ${pendingReminders.length} adet potansiyel hatırlatıcı bulundu`);
+            
+            // Bugün gerçekten gönderilmesi gerekenleri filtrele
+            const todaysReminders = pendingReminders.filter(reminder => {
+                if (reminder.nextSendDate && reminder.nextSendDate <= today) {
+                    return true;
+                }
+                if (reminder.reminderDays === todayDay) {
+                    return true;
+                }
+                return false;
+            });
+
+            console.log(`✅ ${todaysReminders.length} adet bugün gönderilecek hatırlatıcı`);
+
             let successCount = 0;
             let errorCount = 0;
-            for (const reminder of pendingReminders) {
+            
+            for (const reminder of todaysReminders) {
                 try {
+                    console.log(`📧 Hatırlatıcı işleniyor: ${reminder._id} (${reminder.email})`);
                     await this.sendReminder(reminder);
                     successCount++;
                 } catch (error) {
-                    console.error(`Hatırlatıcı gönderme hatası (ID: ${reminder._id}):`, error);
+                    console.error(`❌ Hatırlatıcı gönderme hatası (ID: ${reminder._id}):`, error.message);
                     errorCount++;
                 }
             }
-            console.log(`Hatırlatıcı kontrolü tamamlandı. Başarılı: ${successCount}, Hatalı: ${errorCount}`);
+            
+            console.log(`🏁 Hatırlatıcı kontrolü tamamlandı. Başarılı: ${successCount}, Hatalı: ${errorCount}`);
             return {
                 success: true,
-                total: pendingReminders.length,
+                total: todaysReminders.length,
                 successCount,
-                errorCount
+                errorCount,
+                details: {
+                    checkedDate: today.toISOString(),
+                    dayOfMonth: todayDay
+                }
             };
         } catch (error) {
-            console.error('Hatırlatıcı kontrolü hatası:', error);
+            console.error('❌ Hatırlatıcı kontrolü hatası:', error);
             return {
                 success: false,
                 error: error.message

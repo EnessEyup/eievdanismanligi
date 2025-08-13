@@ -1,0 +1,23 @@
+{
+    "name": "Ev Sahibi Danışmanlığı - Eyüpoğlu & Işıkgör",
+    "short_name": "Ev Sahibi",
+    "description": "Ev sahipleri için profesyonel hukuki danışmanlık ve kira yönetim araçları",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#B8860B",
+    "icons": [
+        {
+            "src": "images/logo.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "images/logo.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}

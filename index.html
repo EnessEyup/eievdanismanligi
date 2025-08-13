@@ -47,6 +47,8 @@
     <link rel="apple-touch-icon" sizes="180x180" href="assets/images/logo.png">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/images/logo.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/images/logo.png">
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
+    <link rel="manifest" href="assets/manifest.json">
     
     <!-- Preconnect for Performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -65,7 +67,40 @@
     <!-- Google Search Console - Gerçek verification code ile değiştirilecek -->
     <!-- <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE" /> -->
     
-    <!-- Structured Data -->
+    <!-- Structured Data - Organization -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Eyüpoğlu & Işıkgör Hukuk Bürosu",
+        "alternateName": "Ev Sahibi Danışmanlığı",
+        "url": "https://eievdanismanligi.com",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://eievdanismanligi.com/assets/images/logo.png",
+            "width": 1200,
+            "height": 630
+        },
+        "image": "https://eievdanismanligi.com/assets/images/logo.png",
+        "description": "Ev sahipleri için profesyonel hukuki danışmanlık ve kira yönetim araçları",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Ömer Avni Mah. İnebolu Sok. No:3 Derya Han Daire: 9",
+            "addressLocality": "Kabataş Set Üstü",
+            "addressRegion": "Beyoğlu",
+            "postalCode": "34714",
+            "addressCountry": "TR"
+        },
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+90-533-422-25-95",
+            "contactType": "customer service",
+            "email": "av.berat@eyupogluisikgor.com"
+        }
+    }
+    </script>
+    
+    <!-- Structured Data - Legal Service -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",

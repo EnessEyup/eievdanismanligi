@@ -1135,6 +1135,46 @@
             const customRateGroup = document.getElementById('custom-rate-group');
             const customRateInput = document.getElementById('custom-rate');
             const resultPanel = document.getElementById('result-panel');
+            const propertyTypeSelect = document.getElementById('property-type');
+
+            // Update rate preference options based on selected date
+            increaseDateInput.addEventListener('change', updateRatePreferenceOptions);
+            propertyTypeSelect.addEventListener('change', updateRatePreferenceOptions);
+
+            function updateRatePreferenceOptions() {
+                const increaseDate = new Date(increaseDateInput.value);
+                const propertyType = propertyTypeSelect.value;
+                
+                if (!increaseDate || !propertyType) return;
+                
+                const year = increaseDate.getFullYear().toString();
+                const month = String(increaseDate.getMonth() + 1).padStart(2, '0');
+                
+                // Get legal rate for that year/month
+                let legalRateText = 'TÜFE (Yasal oran)';
+                
+                if (tufeRates[year] && tufeRates[year][month]) {
+                    const tufeRate = tufeRates[year][month].toFixed(2);
+                    
+                    // Check if 25% limit applies for housing
+                    if (propertyType === 'konut' && maxLegalRates[year] && maxLegalRates[year][month]) {
+                        const maxRate = Math.min(tufeRates[year][month], maxLegalRates[year][month]);
+                        if (maxRate < tufeRates[year][month]) {
+                            legalRateText = `%${maxRate} (Yasal sınır - TÜFE %${tufeRate})`;
+                        } else {
+                            legalRateText = `%${tufeRate} (TÜFE - Yasal oran)`;
+                        }
+                    } else {
+                        legalRateText = `%${tufeRate} (TÜFE - Yasal oran)`;
+                    }
+                }
+                
+                // Update the first option text
+                const tufeOption = ratePreferenceSelect.querySelector('option[value="tufe"]');
+                if (tufeOption) {
+                    tufeOption.textContent = legalRateText;
+                }
+            }
 
             // Show/hide custom rate input
             ratePreferenceSelect.addEventListener('change', function() {
@@ -1377,6 +1417,9 @@
             // Set default increase date to today
             const today = new Date();
             increaseDateInput.value = today.toISOString().split('T')[0];
+            
+            // Update rate options when page loads
+            setTimeout(updateRatePreferenceOptions, 100);
         });
     </script>
     <!-- Mobile Menu JavaScript -->

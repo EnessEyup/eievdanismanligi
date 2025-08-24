@@ -1089,306 +1089,470 @@
 
     <script>
         // Simplified Rent Calculator - New Logic
-        document.addEventListener('DOMContentLoaded', function() {
+        const RentCalculator = (function() {
             // TÜFE Rates by Year/Month
             const tufeRates = {
-                '2012': { '01': 9.22, '02': 10.12, '03': 10.45, '04': 10.55, '05': 9.97, '06': 9.35, '07': 8.89, '08': 8.56, '09': 8.29, '10': 8.17, '11': 7.80, '12': 6.99 },
-                '2013': { '01': 6.51, '02': 6.13, '03': 6.13, '04': 6.15, '05': 6.65, '06': 7.14, '07': 7.48, '08': 7.72, '09': 7.60, '10': 7.59, '11': 7.48, '12': 7.49 },
-                '2014': { '01': 7.72, '02': 7.77, '03': 8.03, '04': 8.34, '05': 8.76, '06': 8.94, '07': 8.85, '08': 8.99, '09': 8.97, '10': 8.90, '11': 8.81, '12': 8.85 },
-                '2015': { '01': 8.80, '02': 8.57, '03': 8.24, '04': 7.97, '05': 7.84, '06': 7.89, '07': 7.94, '08': 7.86, '09': 7.86, '10': 7.71, '11': 7.57, '12': 7.67 },
-                '2016': { '01': 7.86, '02': 8.46, '03': 8.31, '04': 7.78, '05': 7.47, '06': 7.33, '07': 7.59, '08': 7.89, '09': 7.84, '10': 7.77, '11': 7.46, '12': 7.78 },
-                '2017': { '01': 8.11, '02': 8.53, '03': 9.28, '04': 10.23, '05': 10.70, '06': 10.85, '07': 10.56, '08': 10.40, '09': 10.65, '10': 11.03, '11': 11.52, '12': 11.92 },
-                '2018': { '01': 11.95, '02': 11.61, '03': 11.14, '04': 11.29, '05': 11.80, '06': 12.62, '07': 13.95, '08': 15.25, '09': 17.32, '10': 20.35, '11': 20.51, '12': 20.35 },
-                '2019': { '01': 19.64, '02': 18.57, '03': 18.25, '04': 17.84, '05': 17.56, '06': 17.00, '07': 16.15, '08': 15.59, '09': 14.01, '10': 11.43, '11': 10.94, '12': 11.84 },
-                '2020': { '01': 12.13, '02': 12.45, '03': 11.95, '04': 11.20, '05': 10.59, '06': 11.05, '07': 11.54, '08': 11.72, '09': 11.89, '10': 11.96, '11': 12.36, '12': 14.60 },
-                '2021': { '01': 14.16, '02': 14.25, '03': 14.55, '04': 15.13, '05': 15.72, '06': 16.78, '07': 17.53, '08': 18.38, '09': 19.00, '10': 19.57, '11': 19.84, '12': 36.08 },
-                '2022': { '01': 42.35, '02': 49.99, '03': 54.95, '04': 59.37, '05': 62.96, '06': 67.36, '07': 70.60, '08': 72.49, '09': 75.18, '10': 77.51, '11': 80.84, '12': 72.31 },
-                '2023': { '01': 66.45, '02': 60.50, '03': 57.10, '04': 53.42, '05': 49.73, '06': 46.16, '07': 43.42, '08': 42.02, '09': 41.59, '10': 43.83, '11': 47.09, '12': 53.86 },
-                '2024': { '01': 57.68, '02': 59.94, '03': 61.98, '04': 62.25, '05': 61.78, '06': 60.56, '07': 58.40, '08': 55.94, '09': 53.91, '10': 51.94, '11': 49.94, '12': 47.57 },
-                '2025': { '01': 56.35, '02': 53.83, '03': 51.26, '04': 48.73, '05': 45.80, '06': 43.23, '07': 40.00 }
-            };
+            '2012': { '01': 9.22, '02': 10.12, '03': 10.45, '04': 10.55, '05': 9.97, '06': 9.35, '07': 8.89, '08': 8.56, '09': 8.29, '10': 8.17, '11': 7.80, '12': 6.99 },
+            '2013': { '01': 6.51, '02': 6.13, '03': 6.13, '04': 6.15, '05': 6.65, '06': 7.14, '07': 7.48, '08': 7.72, '09': 7.60, '10': 7.59, '11': 7.48, '12': 7.49 },
+            '2014': { '01': 7.72, '02': 7.77, '03': 8.03, '04': 8.34, '05': 8.76, '06': 8.94, '07': 8.85, '08': 8.99, '09': 8.97, '10': 8.90, '11': 8.81, '12': 8.85 },
+            '2015': { '01': 8.80, '02': 8.57, '03': 8.24, '04': 7.97, '05': 7.84, '06': 7.89, '07': 7.94, '08': 7.86, '09': 7.86, '10': 7.71, '11': 7.57, '12': 7.67 },
+            '2016': { '01': 7.86, '02': 8.46, '03': 8.31, '04': 7.78, '05': 7.47, '06': 7.33, '07': 7.59, '08': 7.89, '09': 7.84, '10': 7.77, '11': 7.46, '12': 7.78 },
+            '2017': { '01': 8.11, '02': 8.53, '03': 9.28, '04': 10.23, '05': 10.70, '06': 10.85, '07': 10.56, '08': 10.40, '09': 10.65, '10': 11.03, '11': 11.52, '12': 11.92 },
+            '2018': { '01': 11.95, '02': 11.61, '03': 11.14, '04': 11.29, '05': 11.80, '06': 12.62, '07': 13.95, '08': 15.25, '09': 17.32, '10': 20.35, '11': 20.51, '12': 20.35 },
+            '2019': { '01': 19.64, '02': 18.57, '03': 18.25, '04': 17.84, '05': 17.56, '06': 17.00, '07': 16.15, '08': 15.59, '09': 14.01, '10': 11.43, '11': 10.94, '12': 11.84 },
+            '2020': { '01': 12.13, '02': 12.45, '03': 11.95, '04': 11.20, '05': 10.59, '06': 11.05, '07': 11.54, '08': 11.72, '09': 11.89, '10': 11.96, '11': 12.36, '12': 14.60 },
+            '2021': { '01': 14.16, '02': 14.25, '03': 14.55, '04': 15.13, '05': 15.72, '06': 16.78, '07': 17.53, '08': 18.38, '09': 19.00, '10': 19.57, '11': 19.84, '12': 36.08 },
+            '2022': { '01': 42.35, '02': 49.99, '03': 54.95, '04': 59.37, '05': 62.96, '06': 67.36, '07': 70.60, '08': 72.49, '09': 75.18, '10': 77.51, '11': 80.84, '12': 72.31 },
+            '2023': { '01': 66.45, '02': 60.50, '03': 57.10, '04': 53.42, '05': 49.73, '06': 46.16, '07': 43.42, '08': 42.02, '09': 41.59, '10': 43.83, '11': 47.09, '12': 53.86 },
+            '2024': { '01': 57.68, '02': 59.94, '03': 61.98, '04': 62.25, '05': 61.78, '06': 60.56, '07': 58.40, '08': 55.94, '09': 53.91, '10': 51.94, '11': 49.94, '12': 47.57 },
+            '2025': { '01': 56.35, '02': 53.83, '03': 51.26, '04': 48.73, '05': 45.80, '06': 43.23, '07': 40.00 }
+        };
 
-            // Yİ-ÜFE Rates
-            const yiufeRates = {
-                '2019': { '01': 28.15, '02': 25.95, '03': 24.52, '04': 22.89, '05': 20.35, '06': 16.47, '07': 12.58, '08': 8.95, '09': 5.23, '10': 2.47, '11': 1.85, '12': 7.36 },
-                '2020': { '01': 12.94, '02': 16.67, '03': 15.04, '04': 4.13, '05': -7.67, '06': -12.78, '07': -10.43, '08': -6.95, '09': -3.15, '10': 0.27, '11': 4.08, '12': 25.15 },
-                '2021': { '01': 26.16, '02': 31.20, '03': 39.27, '04': 68.50, '05': 89.05, '06': 116.73, '07': 138.34, '08': 145.09, '09': 151.37, '10': 158.54, '11': 210.64, '12': 79.89 },
-                '2022': { '01': 105.01, '02': 108.53, '03': 115.90, '04': 121.82, '05': 132.16, '06': 138.34, '07': 138.76, '08': 145.68, '09': 151.64, '10': 158.35, '11': 167.05, '12': 54.62 },
-                '2023': { '01': 58.69, '02': 50.12, '03': 41.97, '04': 33.83, '05': 24.58, '06': 15.75, '07': 7.15, '08': -0.44, '09': -8.56, '10': -15.72, '11': -22.02, '12': -36.80 },
-                '2024': { '01': -36.36, '02': -38.30, '03': -41.30, '04': -44.34, '05': -47.15, '06': -49.63, '07': -51.74, '08': -53.48, '09': -54.88, '10': -55.95, '11': -56.72, '12': -57.20 },
-                '2025': { '01': -45.23, '02': -42.17, '03': -39.05, '04': -35.88 }
-            };
+        // Yİ-ÜFE Rates
+        const yiufeRates = {
+            '2019': { '01': 28.15, '02': 25.95, '03': 24.52, '04': 22.89, '05': 20.35, '06': 16.47, '07': 12.58, '08': 8.95, '09': 5.23, '10': 2.47, '11': 1.85, '12': 7.36 },
+            '2020': { '01': 12.94, '02': 16.67, '03': 15.04, '04': 4.13, '05': -7.67, '06': -12.78, '07': -10.43, '08': -6.95, '09': -3.15, '10': 0.27, '11': 4.08, '12': 25.15 },
+            '2021': { '01': 26.16, '02': 31.20, '03': 39.27, '04': 68.50, '05': 89.05, '06': 116.73, '07': 138.34, '08': 145.09, '09': 151.37, '10': 158.54, '11': 210.64, '12': 79.89 },
+            '2022': { '01': 105.01, '02': 108.53, '03': 115.90, '04': 121.82, '05': 132.16, '06': 138.34, '07': 138.76, '08': 145.68, '09': 151.64, '10': 158.35, '11': 167.05, '12': 54.62 },
+            '2023': { '01': 58.69, '02': 50.12, '03': 41.97, '04': 33.83, '05': 24.58, '06': 15.75, '07': 7.15, '08': -0.44, '09': -8.56, '10': -15.72, '11': -22.02, '12': -36.80 },
+            '2024': { '01': -36.36, '02': -38.30, '03': -41.30, '04': -44.34, '05': -47.15, '06': -49.63, '07': -51.74, '08': -53.48, '09': -54.88, '10': -55.95, '11': -56.72, '12': -57.20 },
+            '2025': { '01': -45.23, '02': -42.17, '03': -39.05, '04': -35.88 }
+        };
 
-            // Maximum legal rates by year (for housing 25% limit 2022-2024)
-            const maxLegalRates = {
-                '2012': null, // No limit (ÜFE applies)
-                '2013': null,
-                '2014': null,
-                '2015': null,
-                '2016': null,
-                '2017': null,
-                '2018': null,
-                '2019': null,
-                '2020': null,
-                '2021': null,
-                '2022': { '06': 25, '07': 25, '08': 25, '09': 25, '10': 25, '11': 25, '12': 25 }, // 25% limit from June 11, 2022
-                '2023': { '01': 25, '02': 25, '03': 25, '04': 25, '05': 25, '06': 25, '07': 25, '08': 25, '09': 25, '10': 25, '11': 25, '12': 25 }, // Full year 25% limit
-                '2024': { '01': 25, '02': 25, '03': 25, '04': 25, '05': 25, '06': 25 }, // Until July 1, 2024
-                '2025': null // No limit after July 2024
-            };
-
-            // DOM Elements
+        document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('rent-calculator');
+            const propertyTypeSelect = document.getElementById('property-type');
+            const tenantTypeSelect = document.getElementById('tenant-type');
+            const contractStartInput = document.getElementById('contract-start');
             const increaseDateInput = document.getElementById('increase-date');
-            const ratePreferenceSelect = document.getElementById('rate-preference');
-            const currentRentInput = document.getElementById('current-rent');
-            const customRateGroup = document.getElementById('custom-rate-group');
-            const customRateInput = document.getElementById('custom-rate');
+            const calculationTypeSelect = document.getElementById('calculation-type');
             const resultPanel = document.getElementById('result-panel');
+            const loading = document.getElementById('loading');
+            const dateWarning = document.getElementById('date-warning');
 
-            // Show/hide custom rate input
-            ratePreferenceSelect.addEventListener('change', function() {
-                if (this.value === 'custom') {
-                    customRateGroup.style.display = 'block';
-                    customRateInput.required = true;
+            // Property type değiştiğinde tenant type'ı kontrol et
+            propertyTypeSelect.addEventListener('change', function() {
+                if (this.value === 'konut') {
+                    tenantTypeSelect.disabled = true;
+                    tenantTypeSelect.value = 'gercek';
                 } else {
-                    customRateGroup.style.display = 'none';
-                    customRateInput.required = false;
+                    tenantTypeSelect.disabled = false;
                 }
             });
+
+            // Tarih kontrolü
+            increaseDateInput.addEventListener('change', validateDates);
+            contractStartInput.addEventListener('change', validateDates);
+
+            function validateDates() {
+                const contractStart = new Date(contractStartInput.value);
+                const increaseDate = new Date(increaseDateInput.value);
+                const minIncreaseDate = new Date(contractStart);
+                minIncreaseDate.setFullYear(minIncreaseDate.getFullYear() + 1);
+
+                if (increaseDate < minIncreaseDate) {
+                    dateWarning.classList.add('show');
+                    return false;
+                } else {
+                    dateWarning.classList.remove('show');
+                    return true;
+                }
+            }
 
             // Form submit
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
+                if (!validateDates()) {
+                    alert('Kira artışı sözleşme başlangıcından en az 1 yıl sonra yapılabilir.');
+                    return;
+                }
                 calculateRentIncrease();
             });
 
-            function calculateRentIncrease() {
-                const increaseDate = new Date(increaseDateInput.value);
-                const ratePreference = ratePreferenceSelect.value;
-                const currentRent = parseFloat(currentRentInput.value);
-                const propertyType = document.getElementById('property-type').value;
+            function getApplicableRate(date, propertyType, tenantType) {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const prevMonth = date.getMonth() === 0 ? '12' : String(date.getMonth()).padStart(2, '0');
+                const prevYear = date.getMonth() === 0 ? year - 1 : year;
 
-                if (!increaseDate || !ratePreference || !currentRent || !propertyType) {
-                    showError('Lütfen tüm alanları doldurun.');
-                    return;
+                let rate = 0;
+                let rateType = '';
+                let notes = [];
+
+                // 2012 öncesi
+                if (year < 2012) {
+                    return { rate: 0, type: 'Veri yok', notes: ['2012 öncesi için veri bulunmamaktadır'] };
                 }
 
-                const year = increaseDate.getFullYear().toString();
-                const month = String(increaseDate.getMonth() + 1).padStart(2, '0');
-
-                let calculatedRate = 0;
-                let rateSource = '';
-
-                // Calculate rate based on preference
-                switch (ratePreference) {
-                    case 'tufe':
-                        if (tufeRates[year] && tufeRates[year][month]) {
-                            calculatedRate = tufeRates[year][month];
-                            rateSource = 'TÜFE (Yasal oran)';
-                        } else {
-                            showError('Seçilen tarih için TÜFE verisi bulunamadı.');
-                            return;
-                        }
-                        break;
-
-                    case 'yiufe-12':
-                        // Calculate 12-month average for Yİ-ÜFE
-                        calculatedRate = calculateYearlyAverage(yiufeRates, year);
-                        rateSource = 'Yİ-ÜFE (12 aylık ortalama)';
-                        break;
-
-                    case 'custom':
-                        calculatedRate = parseFloat(customRateInput.value);
-                        rateSource = 'Özel Oran';
-                        break;
-
-                    case 'tufe-past':
-                        const pastYear = (parseInt(year) - 1).toString();
-                        if (tufeRates[pastYear] && tufeRates[pastYear][month]) {
-                            calculatedRate = tufeRates[pastYear][month];
-                            rateSource = 'TÜFE (Geçen yılın aynı ayına göre)';
-                        } else {
-                            showError('Geçen yıl için TÜFE verisi bulunamadı.');
-                            return;
-                        }
-                        break;
-
-                    case 'yiufe-past':
-                        const pastYearYiufe = (parseInt(year) - 1).toString();
-                        if (yiufeRates[pastYearYiufe] && yiufeRates[pastYearYiufe][month]) {
-                            calculatedRate = yiufeRates[pastYearYiufe][month];
-                            rateSource = 'Yİ-ÜFE (Geçen yılın aynı ayına göre)';
-                        } else {
-                            showError('Geçen yıl için Yİ-ÜFE verisi bulunamadı.');
-                            return;
-                        }
-                        break;
-
-                    case 'tufe-yiufe-12':
-                        const tufeAvg = calculateYearlyAverage(tufeRates, year);
-                        const yiufeAvg = calculateYearlyAverage(yiufeRates, year);
-                        calculatedRate = (tufeAvg + yiufeAvg) / 2;
-                        rateSource = '(TÜFE + Yİ-ÜFE)/2 (12 aylık ortalama)';
-                        break;
-
-                    case 'tufe-yiufe-past':
-                        const pastYearForBoth = (parseInt(year) - 1).toString();
-                        let pastTufe = 0, pastYiufe = 0;
-                        if (tufeRates[pastYearForBoth] && tufeRates[pastYearForBoth][month]) {
-                            pastTufe = tufeRates[pastYearForBoth][month];
-                        }
-                        if (yiufeRates[pastYearForBoth] && yiufeRates[pastYearForBoth][month]) {
-                            pastYiufe = yiufeRates[pastYearForBoth][month];
-                        }
-                        calculatedRate = (pastTufe + pastYiufe) / 2;
-                        rateSource = '(TÜFE + Yİ-ÜFE)/2 (Geçen yılın aynı ayına göre)';
-                        break;
+                // 2012 Temmuz öncesi
+                if (year === 2012 && date.getMonth() < 6) {
+                    return { rate: 0, type: 'Serbest', notes: ['1 Temmuz 2012 öncesi kira artışı serbestti'] };
                 }
 
-                // Apply legal maximum if applicable (for housing during 2022-2024 period)
-                let finalRate = calculatedRate;
-                let isLimited = false;
-                
-                if (propertyType === 'konut' && maxLegalRates[year]) {
-                    if (maxLegalRates[year][month] && calculatedRate > maxLegalRates[year][month]) {
-                        finalRate = maxLegalRates[year][month];
-                        isLimited = true;
+                // 2012 Temmuz - 2018 Aralık (ÜFE dönemi)
+                if ((year === 2012 && date.getMonth() >= 6) || (year > 2012 && year < 2019)) {
+                    // İşyeri ve kiracı tacir ise
+                    if (propertyType === 'isyeri' && tenantType === 'tacir') {
+                        rateType = 'Sözleşmedeki oran';
+                        notes.push('İşyeri kiralarında kiracı tacir ise 1 Temmuz 2020\'ye kadar sözleşmedeki oran geçerli');
+                        return { rate: 0, type: rateType, notes: notes, custom: true };
+                    }
+                    
+                    // Diğer durumlar için ÜFE
+                    if (ufeRates[prevYear] && ufeRates[prevYear][prevMonth]) {
+                        rate = ufeRates[prevYear][prevMonth];
+                        rateType = 'ÜFE (12 aylık ort.)';
                     }
                 }
 
-                // Calculate amounts
-                const increaseAmount = (currentRent * finalRate) / 100;
+                // 2019 sonrası (TÜFE dönemi)
+                else if (year >= 2019) {
+                    // İşyeri tacir istisnası 2020 Temmuz'a kadar
+                    if (propertyType === 'isyeri' && tenantType === 'tacir' && 
+                        (year < 2020 || (year === 2020 && date.getMonth() < 6))) {
+                        rateType = 'Sözleşmedeki oran';
+                        notes.push('İşyeri kiralarında kiracı tacir ise 1 Temmuz 2020\'ye kadar sözleşmedeki oran geçerli');
+                        return { rate: 0, type: rateType, notes: notes, custom: true };
+                    }
+
+                    // %25 sınırı kontrolü (11 Haziran 2022 - 1 Temmuz 2024)
+                    const limitStartDate = new Date('2022-06-11');
+                    const limitEndDate = new Date('2024-07-01');
+                    
+                    if (propertyType === 'konut' && date >= limitStartDate && date < limitEndDate) {
+                        // TÜFE oranını al
+                        if (tufeRates[prevYear] && tufeRates[prevYear][prevMonth]) {
+                            const tufeRate = tufeRates[prevYear][prevMonth];
+                            rate = Math.min(tufeRate, 25);
+                            rateType = rate < tufeRate ? '%25 sınırı' : 'TÜFE (12 aylık ort.)';
+                            if (rate < tufeRate) {
+                                notes.push(`TÜFE oranı %${tufeRate.toFixed(2)} olmasına rağmen %25 sınırı uygulandı`);
+                            }
+                        }
+                    } else {
+                        // Normal TÜFE
+                        if (tufeRates[prevYear] && tufeRates[prevYear][prevMonth]) {
+                            rate = tufeRates[prevYear][prevMonth];
+                            rateType = 'TÜFE (12 aylık ort.)';
+                        }
+                    }
+                }
+
+                // 5 yıl kuralı
+                const contractStart = new Date(contractStartInput.value);
+                const yearsDiff = (date - contractStart) / (365 * 24 * 60 * 60 * 1000);
+                if (yearsDiff >= 5) {
+                    notes.push('5 yılı aşan sözleşmelerde hakim hakkaniyete göre belirleme yapabilir');
+                }
+
+                return { rate: rate, type: rateType, notes: notes };
+            }
+
+            function calculateRentIncrease() {
+                loading.classList.add('show');
+                resultPanel.classList.remove('show');
+
+                const propertyType = document.getElementById('property-type').value;
+                const tenantType = document.getElementById('tenant-type').value;
+                const contractStart = new Date(document.getElementById('contract-start').value);
+                const increaseDate = new Date(document.getElementById('increase-date').value);
+                const currentRent = parseFloat(document.getElementById('current-rent').value);
+                const calculationType = document.getElementById('calculation-type').value;
+
+                setTimeout(() => {
+                    if (calculationType === 'single') {
+                        calculateSingleYear(increaseDate, propertyType, tenantType, currentRent);
+                } else {
+                        calculateMultiYear(contractStart, increaseDate, propertyType, tenantType, currentRent);
+                }
+                    loading.classList.remove('show');
+                }, 1000);
+            }
+
+            function calculateSingleYear(increaseDate, propertyType, tenantType, currentRent) {
+                const rateInfo = getApplicableRate(increaseDate, propertyType, tenantType);
+                
+                if (rateInfo.custom) {
+                    showCustomRateMessage(rateInfo, currentRent);
+                    return;
+                }
+
+                const increaseAmount = (currentRent * rateInfo.rate) / 100;
                 const newRent = currentRent + increaseAmount;
 
-                // Show results
-                showResult({
-                    increaseDate: formatDate(increaseDate),
-                    rateSource: rateSource,
-                    calculatedRate: calculatedRate.toFixed(2) + '%',
-                    finalRate: finalRate.toFixed(2) + '%',
-                    currentRent: formatCurrency(currentRent),
-                    increaseAmount: formatCurrency(increaseAmount),
-                    newRent: formatCurrency(newRent),
-                    isLimited: isLimited,
-                    propertyType: propertyType === 'konut' ? 'Konut' : 'İşyeri'
-                });
+                showResults(rateInfo.rate, currentRent, newRent, increaseAmount, increaseDate, rateInfo.type, rateInfo.notes);
             }
 
-            function calculateYearlyAverage(rates, year) {
-                const yearData = rates[year];
-                if (!yearData) return 0;
-                
-                const values = Object.values(yearData);
-                return values.reduce((sum, val) => sum + val, 0) / values.length;
-            }
+            function calculateMultiYear(contractStart, endDate, propertyType, tenantType, initialRent) {
+                const results = [];
+                let currentRent = initialRent;
+                let currentDate = new Date(contractStart);
+                currentDate.setFullYear(currentDate.getFullYear() + 1);
 
-            function showResult(data) {
-                let html = `
-                    <div class="result-title">
-                        <i class="fas fa-check-circle"></i>
-                        Kira Artışı Hesaplandı
-                    </div>
+                while (currentDate <= endDate) {
+                    const rateInfo = getApplicableRate(currentDate, propertyType, tenantType);
                     
-                    <div class="result-summary">
-                        <div class="main-result">
-                            <div class="amount-display">${data.newRent}</div>
-                            <div class="amount-label">Yeni Kira Bedeli</div>
-                        </div>
-                        <div class="increase-rate">
-                            <span class="rate-value">%${data.finalRate.replace('%', '')}</span>
-                            <span class="rate-label">Artış Oranı</span>
-                        </div>
-                    </div>
-
-                    <div class="result-details">
-                        <div class="detail-row">
-                            <span class="label">Artış Tarihi:</span>
-                            <span class="value">${data.increaseDate}</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="label">Hesaplama Yöntemi:</span>
-                            <span class="value">${data.rateSource}</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="label">Gayrimenkul Türü:</span>
-                            <span class="value">${data.propertyType}</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="label">Mevcut Kira:</span>
-                            <span class="value">${data.currentRent}</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="label">Artış Tutarı:</span>
-                            <span class="value">${data.increaseAmount}</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="label">Yeni Kira:</span>
-                            <span class="value strong">${data.newRent}</span>
-                        </div>
-                `;
-
-                if (data.calculatedRate !== data.finalRate) {
-                    html += `
-                        <div class="detail-row">
-                            <span class="label">Hesaplanan Oran:</span>
-                            <span class="value">${data.calculatedRate}</span>
-                        </div>
-                    `;
+                    if (!rateInfo.custom) {
+                        const increaseAmount = (currentRent * rateInfo.rate) / 100;
+                        const newRent = currentRent + increaseAmount;
+                        
+                        results.push({
+                            date: currentDate.toLocaleDateString('tr-TR'),
+                            year: currentDate.getFullYear(),
+                            rateType: rateInfo.type,
+                            rate: rateInfo.rate,
+                            oldRent: currentRent,
+                            newRent: newRent,
+                            increase: increaseAmount,
+                            notes: rateInfo.notes
+                        });
+                        
+                        currentRent = newRent;
+                    } else {
+                        results.push({
+                            date: currentDate.toLocaleDateString('tr-TR'),
+                            year: currentDate.getFullYear(),
+                            rateType: rateInfo.type,
+                            rate: 'Sözleşmeye göre',
+                            oldRent: currentRent,
+                            newRent: '-',
+                            increase: '-',
+                            notes: rateInfo.notes
+                        });
+                    }
+                    
+                    currentDate.setFullYear(currentDate.getFullYear() + 1);
                 }
 
-                html += '</div>';
-
-                if (data.isLimited) {
-                    html += `
-                        <div class="legal-note">
-                            <i class="fas fa-info-circle"></i>
-                            <strong>Yasal Sınır Uygulandı:</strong> Hesaplanan oran yasal maksimum sınırı aştığı için %25 ile sınırlandırılmıştır.
-                        </div>
-                    `;
-                }
-
-                resultPanel.innerHTML = html;
-                resultPanel.className = 'result-panel show success';
-                resultPanel.scrollIntoView({ behavior: 'smooth' });
+                showMultiYearResults(results, initialRent);
             }
 
-            function showError(message) {
-                const html = `
-                    <div class="result-title">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        Hata
-                    </div>
-                    <div class="error-message">${message}</div>
-                `;
+            function showResults(rate, oldRent, newRent, increaseAmount, date, type, notes) {
+                document.getElementById('increase-rate').textContent = `%${rate.toFixed(2)}`;
+                document.getElementById('old-rent').textContent = `₺${oldRent.toLocaleString('tr-TR', {minimumFractionDigits: 2})}`;
+                document.getElementById('new-rent').textContent = `₺${newRent.toLocaleString('tr-TR', {minimumFractionDigits: 2})}`;
+                document.getElementById('increase-amount').textContent = `₺${increaseAmount.toLocaleString('tr-TR', {minimumFractionDigits: 2})}`;
+                document.getElementById('result-date').textContent = `Hesaplama Tarihi: ${new Date().toLocaleDateString('tr-TR')}`;
+
+                const summaryText = `${date.toLocaleDateString('tr-TR')} tarihinde ${type} oranına göre yapılan hesaplamada, ₺${oldRent.toLocaleString('tr-TR', {minimumFractionDigits: 2})} olan kiranız %${rate.toFixed(2)} artışla ₺${newRent.toLocaleString('tr-TR', {minimumFractionDigits: 2})} olacaktır. Aylık artış miktarı ₺${increaseAmount.toLocaleString('tr-TR', {minimumFractionDigits: 2})}'dir.`;
+                document.getElementById('result-summary-text').textContent = summaryText;
+
+                // Notları göster
+                if (notes && notes.length > 0) {
+                    const notesList = document.getElementById('notes-list');
+                    notesList.innerHTML = '';
+                    notes.forEach(note => {
+                        const li = document.createElement('li');
+                        li.textContent = note;
+                        notesList.appendChild(li);
+                    });
+                    document.getElementById('result-notes').style.display = 'block';
+                } else {
+                    document.getElementById('result-notes').style.display = 'none';
+                }
+
+                document.getElementById('multi-year-table').style.display = 'none';
+                resultPanel.classList.add('show');
+            }
+
+            function showMultiYearResults(results, initialRent) {
+                if (results.length === 0) return;
+
+                const lastResult = results[results.length - 1];
+                const totalIncrease = lastResult.newRent !== '-' ? lastResult.newRent - initialRent : 0;
+                const totalRate = lastResult.newRent !== '-' ? ((lastResult.newRent - initialRent) / initialRent) * 100 : 0;
+
+                // Son yıl özeti
+                document.getElementById('increase-rate').textContent = `%${totalRate.toFixed(2)} (toplam)`;
+                document.getElementById('old-rent').textContent = `₺${initialRent.toLocaleString('tr-TR', {minimumFractionDigits: 2})}`;
+                document.getElementById('new-rent').textContent = lastResult.newRent !== '-' ? `₺${lastResult.newRent.toLocaleString('tr-TR', {minimumFractionDigits: 2})}` : '-';
+                document.getElementById('increase-amount').textContent = `₺${totalIncrease.toLocaleString('tr-TR', {minimumFractionDigits: 2})}`;
+                document.getElementById('result-date').textContent = `Hesaplama Tarihi: ${new Date().toLocaleDateString('tr-TR')}`;
+
+                document.getElementById('result-summary-text').textContent = `${results[0].date} - ${lastResult.date} tarihleri arasında toplam %${totalRate.toFixed(2)} artış gerçekleşmiştir.`;
+
+                // Tablo oluştur
+                const tbody = document.getElementById('multi-year-tbody');
+                tbody.innerHTML = '';
                 
-                resultPanel.innerHTML = html;
-                resultPanel.className = 'result-panel show error';
-                resultPanel.scrollIntoView({ behavior: 'smooth' });
-            }
-
-            function formatCurrency(amount) {
-                return new Intl.NumberFormat('tr-TR', {
-                    style: 'currency',
-                    currency: 'TRY',
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                }).format(amount);
-            }
-
-            function formatDate(date) {
-                return date.toLocaleDateString('tr-TR', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
+                results.forEach((result, index) => {
+                    const tr = document.createElement('tr');
+                    if (index === results.length - 1) tr.className = 'highlight';
+                    
+                    tr.innerHTML = `
+                        <td>${result.date}</td>
+                        <td>${result.rateType}</td>
+                        <td>${typeof result.rate === 'number' ? `%${result.rate.toFixed(2)}` : result.rate}</td>
+                        <td>₺${result.oldRent.toLocaleString('tr-TR', {minimumFractionDigits: 2})}</td>
+                        <td>${result.newRent !== '-' ? `₺${result.newRent.toLocaleString('tr-TR', {minimumFractionDigits: 2})}` : '-'}</td>
+                        <td>${result.increase !== '-' ? `₺${result.increase.toLocaleString('tr-TR', {minimumFractionDigits: 2})}` : '-'}</td>
+                    `;
+                    tbody.appendChild(tr);
                 });
+
+                // Tüm notları birleştir
+                const allNotes = [];
+                results.forEach(result => {
+                    if (result.notes) {
+                        result.notes.forEach(note => {
+                            if (!allNotes.includes(note)) {
+                                allNotes.push(note);
+                            }
+                        });
+                    }
+                });
+
+                if (allNotes.length > 0) {
+                    const notesList = document.getElementById('notes-list');
+                    notesList.innerHTML = '';
+                    allNotes.forEach(note => {
+                        const li = document.createElement('li');
+                        li.textContent = note;
+                        notesList.appendChild(li);
+                    });
+                    document.getElementById('result-notes').style.display = 'block';
+                } else {
+                    document.getElementById('result-notes').style.display = 'none';
+                }
+
+                document.getElementById('multi-year-table').style.display = 'block';
+                resultPanel.classList.add('show');
             }
 
-            // Set default increase date to today
-            const today = new Date();
-            increaseDateInput.value = today.toISOString().split('T')[0];
+            function showCustomRateMessage(rateInfo, currentRent) {
+                document.getElementById('increase-rate').textContent = 'Sözleşmeye göre';
+                document.getElementById('old-rent').textContent = `₺${currentRent.toLocaleString('tr-TR', {minimumFractionDigits: 2})}`;
+                document.getElementById('new-rent').textContent = '-';
+                document.getElementById('increase-amount').textContent = '-';
+                document.getElementById('result-date').textContent = `Hesaplama Tarihi: ${new Date().toLocaleDateString('tr-TR')}`;
+
+                document.getElementById('result-summary-text').textContent = 'Bu dönemde kira artışı sözleşmede belirlenen orana göre yapılacaktır.';
+
+                if (rateInfo.notes && rateInfo.notes.length > 0) {
+                    const notesList = document.getElementById('notes-list');
+                    notesList.innerHTML = '';
+                    rateInfo.notes.forEach(note => {
+                        const li = document.createElement('li');
+                        li.textContent = note;
+                        notesList.appendChild(li);
+                    });
+                    document.getElementById('result-notes').style.display = 'block';
+                } else {
+                    document.getElementById('result-notes').style.display = 'none';
+                }
+
+                document.getElementById('multi-year-table').style.display = 'none';
+                resultPanel.classList.add('show');
+            }
+
+            // Bugünün tarihini varsayılan olarak ayarla
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('increase-date').value = today;
+            
+            // Varsayılan başlangıç tarihi
+            const oneYearAgo = new Date();
+            oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+            document.getElementById('contract-start').value = oneYearAgo.toISOString().split('T')[0];
+        });
+
+        // Public API - Return only necessary functions
+        return {
+            getApplicableRate: getApplicableRate,
+            calculateRentIncrease: calculateRentIncrease,
+            calculateMultiYearIncrease: calculateMultiYearIncrease
+        };
+    })();
+
+    // Initialize calculator when DOM is ready
+            // Initialize calculator when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('rent-calculator');
+            const propertyTypeSelect = document.getElementById('property-type');
+            const tenantTypeSelect = document.getElementById('tenant-type');
+            const contractStartInput = document.getElementById('contract-start');
+            const increaseDateInput = document.getElementById('increase-date');
+            const resultPanel = document.getElementById('result-panel');
+            const loading = document.getElementById('loading');
+            const dateWarning = document.getElementById('date-warning');
+
+            // Property type değiştiğinde tenant type'ı kontrol et
+            propertyTypeSelect.addEventListener('change', function() {
+                if (this.value === 'konut') {
+                    tenantTypeSelect.disabled = true;
+                    tenantTypeSelect.value = 'gercek';
+                } else {
+                    tenantTypeSelect.disabled = false;
+                }
+            });
+
+            // Tarih kontrolü
+            increaseDateInput.addEventListener('change', validateDates);
+            contractStartInput.addEventListener('change', validateDates);
+
+            function validateDates() {
+                const contractStart = new Date(contractStartInput.value);
+                const increaseDate = new Date(increaseDateInput.value);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
+                const minIncreaseDate = new Date(contractStart);
+                minIncreaseDate.setFullYear(minIncreaseDate.getFullYear() + 1);
+
+                if (increaseDate > today) {
+                    dateWarning.textContent = '⚠️ Gelecek tarihler için kira artışı hesaplanamaz';
+                    dateWarning.classList.add('show');
+                    return false;
+                }
+                
+                if (increaseDate < minIncreaseDate) {
+                    dateWarning.textContent = '⚠️ Artış tarihi sözleşme başlangıcından en az 1 yıl sonra olmalıdır';
+                    dateWarning.classList.add('show');
+                    return false;
+                } else {
+                    dateWarning.classList.remove('show');
+                    return true;
+                }
+            }
+
+            // Form submit
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (!validateDates()) {
+                    return;
+                }
+
+                loading.classList.add('show');
+                resultPanel.classList.remove('show');
+
+                setTimeout(() => {
+                    const formData = new FormData(form);
+                    const propertyType = formData.get('propertyType');
+                    const tenantType = formData.get('tenantType');
+                    const contractStart = new Date(formData.get('contractStart'));
+                    const increaseDate = new Date(formData.get('increaseDate'));
+                    const currentRent = parseFloat(formData.get('currentRent'));
+                    const calculationType = formData.get('calculationType');
+
+                    if (calculationType === 'multi') {
+                        RentCalculator.calculateMultiYearIncrease(contractStart, increaseDate, currentRent, propertyType, tenantType);
+                    } else {
+                        RentCalculator.calculateRentIncrease(increaseDate, currentRent, propertyType, tenantType);
+                    }
+
+                    loading.classList.remove('show');
+                }, 500);
+            });
+
+            // Set default dates
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('increase-date').value = today;
+            
+            const oneYearAgo = new Date();
+            oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+            document.getElementById('contract-start').value = oneYearAgo.toISOString().split('T')[0];
         });
     </script>
+
     <!-- Mobile Menu JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {

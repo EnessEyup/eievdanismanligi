@@ -1160,13 +1160,8 @@
                     
                     // Determine period and legal framework
                     if (year >= 2012 && year <= 2018) {
-                        // 2012-2018 Period: ÜFE for all, special rules for commercial tenants
-                        if (propertyType === 'konut') {
-                            periodInfo = '2012-2018 Dönemi - ÜFE';
-                        } else {
-                            periodInfo = '2012-2018 Dönemi - ÜFE';
-                        }
-                        legalRateText = `%${tufeRate} (${periodInfo})`;
+                        // 2012-2018 Period: ÜFE for all
+                        legalRateText = `%${tufeRate} (Yasal Sınır - ÜFE)`;
                     } 
                     else if (year >= 2019 && year <= 2021) {
                         // 2019-2022 Period: TÜFE starts from 18 January 2019

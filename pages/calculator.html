@@ -1181,7 +1181,7 @@
                         if (propertyType === 'konut' && checkDate >= limitStartDate) {
                             const maxRate = Math.min(tufeRates[yearStr][month], 25);
                             if (maxRate < tufeRates[yearStr][month]) {
-                                legalRateText = `%${maxRate} (%25 Sınırı - 2022)`;
+                                legalRateText = `%${maxRate} (Yasal Sınır - 2022)`;
                             } else {
                                 legalRateText = `%${tufeRate} (2019-2022 Dönemi - TÜFE)`;
                             }
@@ -1193,7 +1193,7 @@
                         // 2023: Full year 25% limit for housing
                         if (propertyType === 'konut') {
                             const maxRate = Math.min(tufeRates[yearStr][month], 25);
-                            legalRateText = `%${maxRate} (%25 Sınırı - 2022-2024)`;
+                            legalRateText = `%${maxRate} (Yasal Sınır - 2022-2024)`;
                         } else {
                             legalRateText = `%${tufeRate} (2019-2022 Dönemi - TÜFE)`;
                         }
@@ -1205,7 +1205,7 @@
                         
                         if (propertyType === 'konut' && checkDate < limitEndDate) {
                             const maxRate = Math.min(tufeRates[yearStr][month], 25);
-                            legalRateText = `%${maxRate} (%25 Sınırı - 2022-2024)`;
+                            legalRateText = `%${maxRate} (Yasal Sınır - 2022-2024)`;
                         } else {
                             legalRateText = `%${tufeRate} (2024 Sonrası - TÜFE)`;
                         }

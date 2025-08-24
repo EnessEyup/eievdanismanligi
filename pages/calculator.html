@@ -1147,25 +1147,72 @@
                 
                 if (!increaseDate || !propertyType) return;
                 
-                const year = increaseDate.getFullYear().toString();
+                const year = increaseDate.getFullYear();
                 const month = String(increaseDate.getMonth() + 1).padStart(2, '0');
+                const yearStr = year.toString();
                 
                 // Get legal rate for that year/month
                 let legalRateText = 'TÜFE (Yasal oran)';
                 
-                if (tufeRates[year] && tufeRates[year][month]) {
-                    const tufeRate = tufeRates[year][month].toFixed(2);
+                if (tufeRates[yearStr] && tufeRates[yearStr][month]) {
+                    const tufeRate = tufeRates[yearStr][month].toFixed(2);
+                    let periodInfo = '';
                     
-                    // Check if 25% limit applies for housing
-                    if (propertyType === 'konut' && maxLegalRates[year] && maxLegalRates[year][month]) {
-                        const maxRate = Math.min(tufeRates[year][month], maxLegalRates[year][month]);
-                        if (maxRate < tufeRates[year][month]) {
-                            legalRateText = `%${maxRate} (Yasal sınır - TÜFE %${tufeRate})`;
+                    // Determine period and legal framework
+                    if (year >= 2012 && year <= 2018) {
+                        // 2012-2018 Period: ÜFE for all, special rules for commercial tenants
+                        if (propertyType === 'konut') {
+                            periodInfo = '2012-2018 Dönemi - ÜFE';
                         } else {
-                            legalRateText = `%${tufeRate} (TÜFE - Yasal oran)`;
+                            periodInfo = '2012-2018 Dönemi - ÜFE';
                         }
-                    } else {
-                        legalRateText = `%${tufeRate} (TÜFE - Yasal oran)`;
+                        legalRateText = `%${tufeRate} (${periodInfo})`;
+                    } 
+                    else if (year >= 2019 && year <= 2021) {
+                        // 2019-2022 Period: TÜFE starts from 18 January 2019
+                        periodInfo = '2019-2022 Dönemi - TÜFE';
+                        legalRateText = `%${tufeRate} (${periodInfo})`;
+                    }
+                    else if (year === 2022) {
+                        // 2022: TÜFE, but 25% limit starts from June 11
+                        const limitStartDate = new Date('2022-06-11');
+                        const checkDate = new Date(increaseDate);
+                        
+                        if (propertyType === 'konut' && checkDate >= limitStartDate) {
+                            const maxRate = Math.min(tufeRates[yearStr][month], 25);
+                            if (maxRate < tufeRates[yearStr][month]) {
+                                legalRateText = `%${maxRate} (%25 Sınırı - 2022)`;
+                            } else {
+                                legalRateText = `%${tufeRate} (2019-2022 Dönemi - TÜFE)`;
+                            }
+                        } else {
+                            legalRateText = `%${tufeRate} (2019-2022 Dönemi - TÜFE)`;
+                        }
+                    }
+                    else if (year === 2023) {
+                        // 2023: Full year 25% limit for housing
+                        if (propertyType === 'konut') {
+                            const maxRate = Math.min(tufeRates[yearStr][month], 25);
+                            legalRateText = `%${maxRate} (%25 Sınırı - 2022-2024)`;
+                        } else {
+                            legalRateText = `%${tufeRate} (2019-2022 Dönemi - TÜFE)`;
+                        }
+                    }
+                    else if (year === 2024) {
+                        // 2024: 25% limit until July 1, then back to TÜFE
+                        const limitEndDate = new Date('2024-07-01');
+                        const checkDate = new Date(increaseDate);
+                        
+                        if (propertyType === 'konut' && checkDate < limitEndDate) {
+                            const maxRate = Math.min(tufeRates[yearStr][month], 25);
+                            legalRateText = `%${maxRate} (%25 Sınırı - 2022-2024)`;
+                        } else {
+                            legalRateText = `%${tufeRate} (2024 Sonrası - TÜFE)`;
+                        }
+                    }
+                    else if (year >= 2025) {
+                        // 2025+: Back to TÜFE for all
+                        legalRateText = `%${tufeRate} (2024 Sonrası - TÜFE)`;
                     }
                 }
                 

@@ -963,6 +963,7 @@
                                 <option value="tufe-monthly">Sadece TÜFE (Önceki ay)</option>
                                 <option value="ufe-monthly">Sadece ÜFE (Önceki ay)</option>
                                 <option value="yiufe-12">Yİ-ÜFE (12 aylık ortalama)</option>
+                                <option value="tufe-12">TÜFE (12 aylık ortalama)</option>
                                 <option value="custom">Özel Oran</option>
                                 <option value="tufe-past">TÜFE (Geçen yılın aynı ayına göre)</option>
                                 <option value="yiufe-past">Yİ-ÜFE (Geçen yılın aynı ayına göre)</option>
@@ -1250,12 +1251,29 @@
                         } else {
                             option.style.display = 'none';
                         }
-                    } else if (year >= 2019 && year <= 2022) {
-                        // 2019-2022 Period: Show only specific options
+                    } else if (year >= 2019 && year <= 2021) {
+                        // 2019-2021 Period: Show only specific options
                         if (value === 'tufe' || value === 'tufe-monthly' || value === 'ufe-monthly' || value === 'yiufe-12' || value === 'custom' || value === '') {
                             option.style.display = 'block';
                         } else {
                             option.style.display = 'none';
+                        }
+                    } else if ((year === 2022) || (year === 2023) || (year === 2024)) {
+                        // %25 Limit Period (2022-2024): Show specific options
+                        const limitStartDate = new Date('2022-06-11');
+                        const limitEndDate = new Date('2024-07-01');
+                        const checkDate = new Date(increaseDate);
+                        
+                        if (checkDate >= limitStartDate && checkDate < limitEndDate) {
+                            // During %25 limit period: Yasal Sınır (%25), Sadece ÜFE (Önceki ay), Sadece TÜFE (Önceki ay), TÜFE (12 aylık ortalama), Özel Oran
+                            if (value === 'tufe' || value === 'ufe-monthly' || value === 'tufe-monthly' || value === 'tufe-12' || value === 'custom' || value === '') {
+                                option.style.display = 'block';
+                            } else {
+                                option.style.display = 'none';
+                            }
+                        } else {
+                            // Outside %25 limit period - show all options
+                            option.style.display = 'block';
                         }
                     } else {
                         // Other periods: Show all options
@@ -1327,6 +1345,12 @@
                         // Calculate 12-month average for Yİ-ÜFE
                         calculatedRate = calculateYearlyAverage(yiufeRates, year);
                         rateSource = 'Yİ-ÜFE (12 aylık ortalama)';
+                        break;
+
+                    case 'tufe-12':
+                        // Calculate 12-month average for TÜFE
+                        calculatedRate = calculateYearlyAverage(tufeRates, year);
+                        rateSource = 'TÜFE (12 aylık ortalama)';
                         break;
 
                     case 'custom':

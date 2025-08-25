@@ -1291,8 +1291,12 @@
                                 option.style.display = 'none';
                             }
                         } else {
-                            // Outside %25 limit period - show all options
-                            option.style.display = 'block';
+                            // Before %25 limit period - same as 2019-2021: Show only specific options
+                            if (value === 'tufe' || value === 'tufe-monthly' || value === 'ufe-monthly' || value === 'yiufe-12' || value === 'custom' || value === '') {
+                                option.style.display = 'block';
+                            } else {
+                                option.style.display = 'none';
+                            }
                         }
                     } else if (year >= 2025) {
                         // 2025+ Period: Same as 2019-2021 - Show only specific options

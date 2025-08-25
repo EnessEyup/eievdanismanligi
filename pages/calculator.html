@@ -1182,8 +1182,17 @@
                         '2017': 27.01  // For 2018 legal rate
                     };
                     legalRate = ufeAverages[legalRateYear] || 0;
+                } else if (year >= 2019 && year <= 2022) {
+                    // 2019-2022 Period: Use fixed TÜFE averages for legal rate
+                    const tufeAverages = {
+                        '2018': 15.18, // For 2019 legal rate
+                        '2019': 12.28, // For 2020 legal rate
+                        '2020': 19.60, // For 2021 legal rate
+                        '2021': 72.31  // For 2022 legal rate
+                    };
+                    legalRate = tufeAverages[legalRateYear] || 0;
                 } else {
-                    // 2019+ Period: Use TÜFE for legal rate
+                    // 2023+ Period: Use calculated TÜFE for legal rate
                     legalRate = calculateYearlyAverage(tufeRates, legalRateYear);
                 }
                 
@@ -1357,8 +1366,23 @@
                                 return;
                             }
                             rateSource = 'ÜFE (Yasal oran - 12 aylık ortalama)';
+                        } else if (parseInt(year) >= 2019 && parseInt(year) <= 2022) {
+                            // 2019-2022 Period: Use fixed TÜFE averages for legal rate
+                            const tufeAverages = {
+                                '2018': 15.18, // For 2019 legal rate
+                                '2019': 12.28, // For 2020 legal rate
+                                '2020': 19.60, // For 2021 legal rate
+                                '2021': 72.31  // For 2022 legal rate
+                            };
+                            
+                            calculatedRate = tufeAverages[legalRateYear] || 0;
+                            if (calculatedRate === 0) {
+                                showError('Seçilen tarih için TÜFE verisi bulunamadı.');
+                                return;
+                            }
+                            rateSource = 'TÜFE (Yasal oran - 12 aylık ortalama)';
                         } else {
-                            // 2019+ Period: Use TÜFE for legal rate
+                            // 2023+ Period: Use calculated TÜFE for legal rate
                             calculatedRate = calculateYearlyAverage(tufeRates, legalRateYear);
                             if (calculatedRate === 0) {
                                 showError('Seçilen tarih için TÜFE verisi bulunamadı.');

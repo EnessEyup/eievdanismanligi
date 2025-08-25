@@ -1170,8 +1170,17 @@
                 
                 let legalRate = 0;
                 if (year >= 2012 && year <= 2018) {
-                    // 2012-2018 Period: Use ÜFE for legal rate
-                    legalRate = calculateYearlyAverage(ufeRates, legalRateYear);
+                    // 2012-2018 Period: Use fixed ÜFE averages for legal rate
+                    const ufeAverages = {
+                        '2011': 6.09,  // For 2012 legal rate
+                        '2012': 4.52,  // For 2013 legal rate
+                        '2013': 10.25, // For 2014 legal rate
+                        '2014': 5.28,  // For 2015 legal rate
+                        '2015': 4.33,  // For 2016 legal rate
+                        '2016': 15.76, // For 2017 legal rate
+                        '2017': 27.01  // For 2018 legal rate
+                    };
+                    legalRate = ufeAverages[legalRateYear] || 0;
                 } else {
                     // 2019+ Period: Use TÜFE for legal rate
                     legalRate = calculateYearlyAverage(tufeRates, legalRateYear);

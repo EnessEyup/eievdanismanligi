@@ -1382,6 +1382,7 @@
                 
             } else if (yearNum >= 2019 && yearNum <= 2022) {
                 // 2019-2022 Period: TÜFE yasal, ÜFE alternatif
+                console.log('2019-2022 dropdown koşulu çalışıyor, year:', yearNum);
                 
                 // Bir önceki ay hesaplama
                 const contractMonthNum = contractDate.getMonth() + 1;
@@ -1395,20 +1396,31 @@
                 }
                 const prevMonthStr = String(prevMonthForRate).padStart(2, '0');
                 
+                console.log('Dropdown için aranıyor: prevYearForRate =', prevYearForRate, 'prevMonthStr =', prevMonthStr);
+                console.log('tufeRates[prevYearForRate]:', tufeRates[prevYearForRate]);
+                console.log('ufeRates[prevYearForRate]:', ufeRates[prevYearForRate]);
+                
                 // 1. Yasal Oran: TÜFE 12 Aylık Ortalama - seçili
                 if (tufeRates[prevYearForRate] && tufeRates[prevYearForRate][prevMonthStr]) {
                     const tufeRate = tufeRates[prevYearForRate][prevMonthStr];
+                    console.log('TÜFE seçeneği ekleniyor:', tufeRate);
                     options += `<option value="${tufeRate}|TÜFE 12 Aylık Ortalama - Yasal" selected>TÜFE 12 Aylık Ortalama - Yasal - %${tufeRate.toFixed(2)}</option>`;
+                } else {
+                    console.log('TÜFE seçeneği eklenemedi');
                 }
                 
                 // 2. ÜFE 12 Aylık Ortalama
                 if (ufeRates[prevYearForRate] && ufeRates[prevYearForRate][prevMonthStr]) {
                     const ufeRate = ufeRates[prevYearForRate][prevMonthStr];
+                    console.log('ÜFE seçeneği ekleniyor:', ufeRate);
                     options += `<option value="${ufeRate}|ÜFE 12 Aylık Ortalama">ÜFE 12 Aylık Ortalama - %${ufeRate.toFixed(2)}</option>`;
+                } else {
+                    console.log('ÜFE seçeneği eklenemedi');
                 }
                 
                 // 3. Özel Oran
                 options += '<option value="custom|Özel Oran">Özel Oran</option>';
+                console.log('Final options length:', options.length);
                 
             } else if ((yearNum === 2023) || (yearNum === 2024)) {
                 // 2022-2024 Period (%25 limit period)

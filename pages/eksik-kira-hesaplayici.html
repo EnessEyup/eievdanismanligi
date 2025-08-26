@@ -1257,6 +1257,7 @@
                 }
             } else if (yearNum >= 2019 && yearNum <= 2022) {
                 // 2019-2022 Period: TÜFE yasal oran (bir önceki ayın değeri)
+                alert('2019-2022 koşulu çalışıyor! Year: ' + yearNum);
                 const contractMonthNum = contractDate.getMonth() + 1;
                 let prevMonthForRate, prevYearForRate;
                 if (contractMonthNum === 1) {
@@ -1297,10 +1298,16 @@
                     legalRateText = `%${legalRate.toFixed(2)} (TÜFE - 12 aylık ortalama)`;
                 }
             } else if (yearNum >= 2025) {
-                // 2025+: Back to TÜFE for all
-                legalRate = legalRatesByYear[yearNum] || calculateYearlyAverage(tufeRates, prevYear.toString());
-                if (legalRate > 0) {
-                    legalRateText = `%${legalRate.toFixed(2)} (TÜFE - 12 aylık ortalama)`;
+                // 2025+: Back to TÜFE for all  
+                // Not using legalRatesByYear for 2019-2022 since they have special handling
+                if (yearNum >= 2019 && yearNum <= 2022) {
+                    legalRate = 0;
+                    legalRateText = 'Handled by previous condition';
+                } else {
+                    legalRate = legalRatesByYear[yearNum] || calculateYearlyAverage(tufeRates, prevYear.toString());
+                    if (legalRate > 0) {
+                        legalRateText = `%${legalRate.toFixed(2)} (TÜFE - 12 aylık ortalama)`;
+                    }
                 }
             } else {
                 // Fallback for years not covered above
@@ -1345,6 +1352,7 @@
                 
             } else if (yearNum >= 2019 && yearNum <= 2022) {
                 console.log('DEBUG: 2019-2022 koşulu çalışıyor');
+                alert('DROPDOWN: 2019-2022 koşulu çalışıyor! Year: ' + yearNum);
                 // 2019-2022 Period: TÜFE yasal, ÜFE alternatif
                 
                 // Bir önceki ay hesaplama

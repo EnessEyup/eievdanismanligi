@@ -1228,6 +1228,7 @@
         let calculationData = [];
 
         function getRateOptions(year, contractDate, propertyType) {
+            alert('getRateOptions çağrıldı! Year: ' + year + ' Type: ' + typeof year);
             const prevYear = year - 1;
             const contractMonth = String(contractDate.getMonth() + 1).padStart(2, '0');
             let options = '';
@@ -1238,6 +1239,7 @@
             
             // Ana hesaplayıcıdaki updateRatePreferenceOptions mantığı
             const yearNum = parseInt(year);
+            alert('yearNum: ' + yearNum + ' (2019 test: ' + (yearNum >= 2019) + ', 2022 test: ' + (yearNum <= 2022) + ')');
             if (yearNum >= 2012 && yearNum <= 2018) {
                 // 2012-2018 Period: Use previous month's ÜFE rate for legal rate
                 const contractMonthNum = contractDate.getMonth() + 1;

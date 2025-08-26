@@ -1237,7 +1237,8 @@
             let legalRate = 0;
             
             // Ana hesaplayıcıdaki updateRatePreferenceOptions mantığı
-            if (year >= 2012 && year <= 2018) {
+            const yearNum = parseInt(year);
+            if (yearNum >= 2012 && yearNum <= 2018) {
                 // 2012-2018 Period: Use previous month's ÜFE rate for legal rate
                 const contractMonthNum = contractDate.getMonth() + 1;
                 let prevMonthForRate, prevYearForRate;
@@ -1254,7 +1255,7 @@
                     legalRate = ufeRates[prevYearForRate][prevMonthStr];
                     legalRateText = `%${legalRate.toFixed(2)} (ÜFE 12 Aylık Ortalama - Yasal)`;
                 }
-            } else if (parseInt(year) >= 2019 && parseInt(year) <= 2022) {
+            } else if (yearNum >= 2019 && yearNum <= 2022) {
                 // 2019-2022 Period: TÜFE yasal oran (bir önceki ayın değeri)
                 const contractMonthNum = contractDate.getMonth() + 1;
                 let prevMonthForRate, prevYearForRate;
@@ -1271,7 +1272,7 @@
                     legalRate = tufeRates[prevYearForRate][prevMonthStr];
                     legalRateText = `%${legalRate.toFixed(2)} (TÜFE 12 Aylık Ortalama - Yasal)`;
                 }
-            } else if (year === 2023) {
+            } else if (yearNum === 2023) {
                 // 2023: Full year 25% limit for housing
                 const baseRate = calculateYearlyAverage(tufeRates, '2022');
                 if (propertyType === 'konut') {
@@ -1281,9 +1282,9 @@
                     legalRate = baseRate;
                     legalRateText = `%${legalRate.toFixed(2)} (TÜFE - 12 aylık ortalama)`;
                 }
-            } else if (year === 2024) {
+            } else if (yearNum === 2024) {
                 // 2024: 25% limit until July 1, then back to TÜFE
-                const baseRate = legalRatesByYear[year] || 0;
+                const baseRate = legalRatesByYear[yearNum] || 0;
                 const increaseDate = new Date(contractDate);
                 increaseDate.setFullYear(year);
                 const limitEndDate = new Date('2024-07-01');
@@ -1295,9 +1296,9 @@
                     legalRate = baseRate;
                     legalRateText = `%${legalRate.toFixed(2)} (TÜFE - 12 aylık ortalama)`;
                 }
-            } else if (year >= 2025) {
+            } else if (yearNum >= 2025) {
                 // 2025+: Back to TÜFE for all
-                legalRate = legalRatesByYear[year] || calculateYearlyAverage(tufeRates, prevYear.toString());
+                legalRate = legalRatesByYear[yearNum] || calculateYearlyAverage(tufeRates, prevYear.toString());
                 if (legalRate > 0) {
                     legalRateText = `%${legalRate.toFixed(2)} (TÜFE - 12 aylık ortalama)`;
                 }
@@ -1310,8 +1311,8 @@
             // DEBUG: Year kontrolü
             console.log('getRateOptions DEBUG - Year:', year, 'Type:', typeof year);
             
-            // Ana hesaplayıcıdaki dönemlere göre seçenekleri filtrele
-            if (year >= 2012 && year <= 2018) {
+            // Ana hesaplayıcıdaki dönemlere göre seçenekleri filtrele  
+            if (yearNum >= 2012 && yearNum <= 2018) {
                 console.log('DEBUG: 2012-2018 koşulu çalışıyor');
                 // 2012-2018 Period: Bir önceki ayın oranları kullanılır
                 
@@ -1342,7 +1343,7 @@
                 // 3. Özel Oran
                 options += '<option value="custom|Özel Oran">Özel Oran</option>';
                 
-            } else if (parseInt(year) >= 2019 && parseInt(year) <= 2022) {
+            } else if (yearNum >= 2019 && yearNum <= 2022) {
                 console.log('DEBUG: 2019-2022 koşulu çalışıyor');
                 // 2019-2022 Period: TÜFE yasal, ÜFE alternatif
                 
@@ -1373,7 +1374,7 @@
                 // 3. Özel Oran
                 options += '<option value="custom|Özel Oran">Özel Oran</option>';
                 
-            } else if ((year === 2023) || (year === 2024)) {
+            } else if ((yearNum === 2023) || (yearNum === 2024)) {
                 console.log('DEBUG: 2023-2024 koşulu çalışıyor');
                 // 2022-2024 Period (%25 limit period)
                 
@@ -1413,7 +1414,7 @@
                 // Özel Oran
                 options += '<option value="custom|Özel Oran">Özel Oran</option>';
                 
-            } else if (year >= 2025) {
+            } else if (yearNum >= 2025) {
                 console.log('DEBUG: 2025+ koşulu çalışıyor');
                 // 2025+ Period: Same as 2019-2021 options
                 

@@ -1566,6 +1566,29 @@
                 
                 const rateOptions = getRateOptions(year, contractDate, propertyType);
 
+                // Seçenekleri temizle ve yeniden oluştur
+                const rateSelect = document.createElement('select');
+                rateSelect.id = `rateSelect_${year}`;
+                rateSelect.className = 'rate-select';
+                rateSelect.setAttribute('onchange', `handleRateSelection(${year})`);
+                
+                // Seçenekleri ayrı ayrı ekle
+                const options = rateOptions.split('</option>');
+                const uniqueOptions = new Set(); // Tekrar eden seçenekleri önlemek için
+                const cleanOptions = [];
+                
+                options.forEach(opt => {
+                    if (opt.trim()) {
+                        const cleanOpt = opt.trim() + '</option>';
+                        if (!uniqueOptions.has(cleanOpt)) {
+                            uniqueOptions.add(cleanOpt);
+                            cleanOptions.push(cleanOpt);
+                        }
+                    }
+                });
+                
+                rateSelect.innerHTML = cleanOptions.join('');
+                
                 yearDiv.innerHTML = `
                     <h4>${year} Yılı Kira Bilgileri</h4>
                     <div class="form-row">
@@ -1576,9 +1599,7 @@
                         </div>
                         <div class="form-group">
                             <label>Sözleşmenizde Yazılan Artış Oranı</label>
-                            <select id="rateSelect_${year}" onchange="handleRateSelection(${year})" class="rate-select">
-                                ${rateOptions}
-                            </select>
+                            ${rateSelect.outerHTML}
                             <div class="help-text">Sözleşmede belirlenen kira artış oranı türü</div>
                             <div id="customRateDiv_${year}" style="display: none; margin-top: 15px;">
                                 <input type="number" id="customRate_${year}" step="0.01" min="0" max="100" placeholder="Özel oran girin (%)" required>

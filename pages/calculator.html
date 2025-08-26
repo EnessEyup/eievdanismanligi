@@ -53,14 +53,66 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     
-    <!-- Google Analytics - Gerçek ID ile değiştirilecek -->
-    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-XXXXXXXXXX');
-    </script> -->
+        
+        // Google Analytics 4 configuration with enhanced measurement
+        gtag('config', 'G-XXXXXXXXXX', {
+            page_title: document.title,
+            page_location: window.location.href,
+            custom_map: {
+                'custom_parameter_1': 'page_type'
+            },
+            // Enhanced measurement features
+            enhanced_measurement: {
+                scrolls: true,
+                outbound_clicks: true,
+                site_search: true,
+                video_engagement: true,
+                file_downloads: true
+            }
+        });
+        
+        // Track page view for calculator
+        gtag('event', 'page_view', {
+            page_title: document.title,
+            page_location: window.location.href,
+            page_type: 'calculator_page'
+        });
+        
+        // Track calculator usage
+        function trackCalculatorUsage(calculationType) {
+            gtag('event', 'calculator_used', {
+                event_category: 'engagement',
+                event_label: calculationType || 'rent_calculator',
+                page_type: 'calculator_page'
+            });
+        }
+        
+        // Track calculation results
+        function trackCalculationResult(increaseRate, calculationType) {
+            gtag('event', 'calculation_completed', {
+                event_category: 'conversion',
+                event_label: calculationType || 'rent_calculation',
+                value: parseFloat(increaseRate) || 0,
+                page_type: 'calculator_page'
+            });
+        }
+        
+        // Track rate preference selection
+        function trackRatePreference(preference) {
+            gtag('event', 'rate_preference_selected', {
+                event_category: 'engagement',
+                event_label: preference,
+                page_type: 'calculator_page'
+            });
+        }
+    </script>
+    
     
     <!-- Google Search Console - Gerçek verification code ile değiştirilecek -->
     <!-- <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE" /> -->
@@ -1350,6 +1402,16 @@
                 const ratePreference = ratePreferenceSelect.value;
                 const currentRent = parseFloat(currentRentInput.value);
                 const propertyType = document.getElementById('property-type').value;
+                
+                // Track calculator usage
+                if (typeof trackCalculatorUsage === 'function') {
+                    trackCalculatorUsage('rent_calculation');
+                }
+                
+                // Track rate preference selection
+                if (typeof trackRatePreference === 'function') {
+                    trackRatePreference(ratePreference);
+                }
 
                 if (!increaseDate || !ratePreference || !currentRent || !propertyType) {
                     showError('Lütfen tüm alanları doldurun.');
@@ -1540,6 +1602,11 @@
                 const increaseAmount = (currentRent * finalRate) / 100;
                 const newRent = currentRent + increaseAmount;
 
+                // Track calculation completion
+                if (typeof trackCalculationResult === 'function') {
+                    trackCalculationResult(finalRate.toFixed(2), ratePreference);
+                }
+                
                 // Show results
                 showResult({
                     increaseDate: formatDate(increaseDate),

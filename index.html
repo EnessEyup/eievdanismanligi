@@ -53,14 +53,73 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     
-    <!-- Google Analytics - Gerçek ID ile değiştirilecek -->
-    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-XXXXXXXXXX');
-    </script> -->
+        
+        // Google Analytics 4 configuration with enhanced measurement
+        gtag('config', 'G-XXXXXXXXXX', {
+            page_title: document.title,
+            page_location: window.location.href,
+            custom_map: {
+                'custom_parameter_1': 'page_type'
+            },
+            // Enhanced measurement features
+            enhanced_measurement: {
+                scrolls: true,
+                outbound_clicks: true,
+                site_search: true,
+                video_engagement: true,
+                file_downloads: true
+            }
+        });
+        
+        // Track page view
+        gtag('event', 'page_view', {
+            page_title: document.title,
+            page_location: window.location.href,
+            page_type: 'homepage'
+        });
+        
+        // Enhanced tracking for rent calculator usage
+        function trackCalculatorUsage() {
+            gtag('event', 'calculator_use', {
+                event_category: 'engagement',
+                event_label: 'rent_calculator',
+                custom_parameter_1: 'calculator_page'
+            });
+        }
+        
+        // Track rental tracking system usage
+        function trackRentalSystem() {
+            gtag('event', 'rental_system_use', {
+                event_category: 'engagement',
+                event_label: 'rental_tracking',
+                custom_parameter_1: 'tracking_page'
+            });
+        }
+        
+        // Track contact form submissions
+        function trackContactForm() {
+            gtag('event', 'contact_form_submit', {
+                event_category: 'contact',
+                event_label: 'contact_form',
+                value: 1
+            });
+        }
+        
+        // Track navigation clicks
+        function trackNavigation(linkText) {
+            gtag('event', 'navigation_click', {
+                event_category: 'navigation',
+                event_label: linkText,
+                custom_parameter_1: 'navigation'
+            });
+        }
+    </script>
     
     <!-- Google Search Console - Gerçek verification code ile değiştirilecek -->
     <!-- <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE" /> -->
@@ -1185,9 +1244,9 @@
             <!-- Desktop Menu -->
             <ul class="nav-menu desktop-menu">
                 <li><a href="#home">Ana Sayfa</a></li>
-                <li><a href="pages/calculator.html">Kira Artış Hesaplayıcı</a></li>
+                <li><a href="pages/calculator.html" onclick="trackNavigation('Kira Artış Hesaplayıcı')">Kira Artış Hesaplayıcı</a></li>
                 <li><a href="pages/eksik-kira-hesaplayici.html">Eksik Kira Hesaplayıcı</a></li>
-                <li><a href="pages/tracking.html">Kira Takip Sistemi</a></li>
+                <li><a href="pages/tracking.html" onclick="trackNavigation('Kira Takip Sistemi')">Kira Takip Sistemi</a></li>
                 <li><a href="pages/knowledge.html">Bilgi Merkezi</a></li>
                 <li><a href="pages/contact.html">İletişim</a></li>
             </ul>
@@ -1205,9 +1264,9 @@
             <div class="mobile-menu-content">
                 <ul class="mobile-nav-menu">
                     <li><a href="#home">Ana Sayfa</a></li>
-                    <li><a href="pages/calculator.html">Kira Artış Hesaplayıcı</a></li>
+                    <li><a href="pages/calculator.html" onclick="trackNavigation('Kira Artış Hesaplayıcı')">Kira Artış Hesaplayıcı</a></li>
                     <li><a href="pages/eksik-kira-hesaplayici.html">Eksik Kira Hesaplayıcı</a></li>
-                    <li><a href="pages/tracking.html">Kira Takip Sistemi</a></li>
+                    <li><a href="pages/tracking.html" onclick="trackNavigation('Kira Takip Sistemi')">Kira Takip Sistemi</a></li>
                     <li><a href="pages/knowledge.html">Bilgi Merkezi</a></li>
                     <li><a href="pages/contact.html">İletişim</a></li>
                 </ul>
@@ -1420,7 +1479,7 @@
                     </div>
                     
                     <div class="tool-cta">
-                        <a href="pages/tracking.html" class="btn-premium">
+                        <a href="pages/tracking.html" class="btn-premium" onclick="trackRentalSystem()">
                             <i class="fas fa-rocket"></i>
                             Ücretsiz Başla
                         </a>
@@ -1513,7 +1572,7 @@
                     </div>
                     
                     <div class="tool-cta">
-                        <a href="pages/calculator.html" class="btn-advanced">
+                        <a href="pages/calculator.html" class="btn-advanced" onclick="trackNavigation('Gelişmiş Hesaplama')">
                             <i class="fas fa-calculator"></i>
                             Hemen Hesapla
                         </a>

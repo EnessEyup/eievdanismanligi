@@ -1101,7 +1101,7 @@
                 '2025': { '01': 56.35, '02': 39.05, '03': 38.10, '04': 37.86, '05': 35.41, '06': 35.05, '07': 33.52 }
             };
 
-            // ÜFE Rates (for 2012-2023 period)
+            // ÜFE Rates (for 2012-2024 period)
             const ufeRates = {
                 '2012': { '01': 11.13, '02': 9.15, '03': 8.22, '04': 7.65, '05': 8.06, '06': 6.44, '07': 6.13, '08': 4.56, '09': 4.03, '10': 2.57, '11': 3.60, '12': 2.45 },
                 '2013': { '01': 1.88, '02': 1.84, '03': 2.30, '04': 1.70, '05': 2.17, '06': 5.23, '07': 6.61, '08': 6.38, '09': 6.23, '10': 6.77, '11': 5.67, '12': 6.97 },
@@ -1114,7 +1114,8 @@
                 '2020': { '01': 8.84, '02': 9.26, '03': 8.50, '04': 6.71, '05': 5.53, '06': 6.17, '07': 8.33, '08': 11.53, '09': 14.33, '10': 18.20, '11': 23.11, '12': 25.15 },
                 '2021': { '01': 26.16, '02': 27.09, '03': 31.20, '04': 35.17, '05': 38.33, '06': 42.89, '07': 44.92, '08': 45.52, '09': 43.96, '10': 46.31, '11': 54.62, '12': 79.89 },
                 '2022': { '01': 93.53, '02': 105.01, '03': 114.97, '04': 121.82, '05': 132.16, '06': 138.31, '07': 144.61, '08': 143.75, '09': 151.50, '10': 157.69, '11': 136.02, '12': 97.72 },
-                '2023': { '01': 86.46, '02': 76.61, '03': 62.45, '04': 52.11, '05': 40.76, '06': 40.42, '07': 44.50, '08': 49.41, '09': 47.44, '10': 39.39, '11': 42.25, '12': 44.22 }
+                '2023': { '01': 86.46, '02': 76.61, '03': 62.45, '04': 52.11, '05': 40.76, '06': 40.42, '07': 44.50, '08': 49.41, '09': 47.44, '10': 39.39, '11': 42.25, '12': 44.22 },
+                '2024': { '01': 44.20, '02': 47.29, '03': 51.47, '04': 55.66, '05': 57.68, '06': 50.09, '07': 41.37, '08': 35.75, '09': 33.09, '10': 32.24, '11': 29.47, '12': 28.52 }
             };
 
             // Yİ-ÜFE Rates
@@ -1195,8 +1196,15 @@
                         '2021': 72.31  // For 2022 legal rate
                     };
                     legalRate = tufeAverages[legalRateYear] || 0;
+                } else if (year >= 2024 && year <= 2025) {
+                    // 2024-2025 Period: Use fixed TÜFE averages for legal rate
+                    const tufeAverages = {
+                        '2023': 62.45, // For 2024 legal rate
+                        '2024': 36.70  // For 2025 legal rate
+                    };
+                    legalRate = tufeAverages[legalRateYear] || 0;
                 } else {
-                    // 2023+ Period: Use calculated TÜFE for legal rate
+                    // 2026+ Period: Use calculated TÜFE for legal rate
                     legalRate = calculateYearlyAverage(tufeRates, legalRateYear);
                 }
                 
@@ -1389,8 +1397,21 @@
                                 return;
                             }
                             rateSource = 'TÜFE (Yasal oran - 12 aylık ortalama)';
+                        } else if (parseInt(year) >= 2024 && parseInt(year) <= 2025) {
+                            // 2024-2025 Period: Use fixed TÜFE averages for legal rate
+                            const tufeAverages = {
+                                '2023': 62.45, // For 2024 legal rate
+                                '2024': 36.70  // For 2025 legal rate
+                            };
+                            
+                            calculatedRate = tufeAverages[legalRateYear] || 0;
+                            if (calculatedRate === 0) {
+                                showError('Seçilen tarih için TÜFE verisi bulunamadı.');
+                                return;
+                            }
+                            rateSource = 'TÜFE (Yasal oran - 12 aylık ortalama)';
                         } else {
-                            // 2023+ Period: Use calculated TÜFE for legal rate
+                            // 2026+ Period: Use calculated TÜFE for legal rate
                             calculatedRate = calculateYearlyAverage(tufeRates, legalRateYear);
                             if (calculatedRate === 0) {
                                 showError('Seçilen tarih için TÜFE verisi bulunamadı.');

@@ -1252,7 +1252,7 @@
                 
                 if (ufeRates[prevYearForRate] && ufeRates[prevYearForRate][prevMonthStr]) {
                     legalRate = ufeRates[prevYearForRate][prevMonthStr];
-                    legalRateText = `%${legalRate.toFixed(2)} (ÜFE - Yasal)`;
+                    legalRateText = `%${legalRate.toFixed(2)} (ÜFE 12 Aylık Ortalama - Yasal)`;
                 }
             } else if (year >= 2019 && year <= 2021) {
                 // 2019-2021 Period: TÜFE starts from 18 January 2019
@@ -1326,16 +1326,16 @@
                 }
                 const prevMonthStr = String(prevMonthForRate).padStart(2, '0');
                 
-                // 1. Yasal Oran: ÜFE (bir önceki ay) - seçili
+                // 1. Yasal Oran: ÜFE 12 Aylık Ortalama - seçili
                 if (ufeRates[prevYearForRate] && ufeRates[prevYearForRate][prevMonthStr]) {
                     const ufeRate = ufeRates[prevYearForRate][prevMonthStr];
-                    options += `<option value="${ufeRate}|ÜFE (Yasal)" selected>ÜFE (Yasal) - %${ufeRate.toFixed(2)}</option>`;
+                    options += `<option value="${ufeRate}|ÜFE 12 Aylık Ortalama - Yasal" selected>ÜFE 12 Aylık Ortalama - Yasal - %${ufeRate.toFixed(2)}</option>`;
                 }
                 
-                // 2. TÜFE (bir önceki ay)
+                // 2. TÜFE 12 Aylık Ortalama
                 if (tufeRates[prevYearForRate] && tufeRates[prevYearForRate][prevMonthStr]) {
                     const tufeRate = tufeRates[prevYearForRate][prevMonthStr];
-                    options += `<option value="${tufeRate}|TÜFE">TÜFE - %${tufeRate.toFixed(2)}</option>`;
+                    options += `<option value="${tufeRate}|TÜFE 12 Aylık Ortalama">TÜFE 12 Aylık Ortalama - %${tufeRate.toFixed(2)}</option>`;
                 }
                 
                 // 3. Özel Oran
@@ -1646,7 +1646,7 @@
                     
                     if (ufeRates[prevYearForRate] && ufeRates[prevYearForRate][prevMonthStr]) {
                         maxLegalRate = ufeRates[prevYearForRate][prevMonthStr];
-                        rateType = 'ÜFE (Yasal)';
+                        rateType = 'ÜFE 12A ort. - Yasal';
                     }
                 } else if (year >= 2019 && year <= 2021) {
                     // 2019-2021 Period: Use fixed TÜFE averages

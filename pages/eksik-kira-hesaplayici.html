@@ -1307,8 +1307,12 @@
                 legalRateText = 'Bilinmeyen dönem';
             }
 
+            // DEBUG: Year kontrolü
+            console.log('getRateOptions DEBUG - Year:', year, 'Type:', typeof year);
+            
             // Ana hesaplayıcıdaki dönemlere göre seçenekleri filtrele
             if (year >= 2012 && year <= 2018) {
+                console.log('DEBUG: 2012-2018 koşulu çalışıyor');
                 // 2012-2018 Period: Bir önceki ayın oranları kullanılır
                 
                 // Bir önceki ay hesaplama
@@ -1339,6 +1343,7 @@
                 options += '<option value="custom|Özel Oran">Özel Oran</option>';
                 
             } else if (parseInt(year) >= 2019 && parseInt(year) <= 2022) {
+                console.log('DEBUG: 2019-2022 koşulu çalışıyor');
                 // 2019-2022 Period: TÜFE yasal, ÜFE alternatif
                 
                 // Bir önceki ay hesaplama
@@ -1369,6 +1374,7 @@
                 options += '<option value="custom|Özel Oran">Özel Oran</option>';
                 
             } else if ((year === 2023) || (year === 2024)) {
+                console.log('DEBUG: 2023-2024 koşulu çalışıyor');
                 // 2022-2024 Period (%25 limit period)
                 
                 // Yasal oran seçeneği
@@ -1408,6 +1414,7 @@
                 options += '<option value="custom|Özel Oran">Özel Oran</option>';
                 
             } else if (year >= 2025) {
+                console.log('DEBUG: 2025+ koşulu çalışıyor');
                 // 2025+ Period: Same as 2019-2021 options
                 
                 // Yasal oran seçeneği (2025 için 36.70)
@@ -1447,6 +1454,7 @@
                 options += '<option value="custom|Özel Oran">Özel Oran</option>';
                 
             } else {
+                console.log('DEBUG: ELSE (fallback) koşulu çalışıyor');
                 // Other periods: Show all options (fallback)
                 if (legalRateText && legalRate > 0) {
                     options += `<option value="${legalRate}|${legalRateText}" selected>Yasal Oran: ${legalRateText} - %${legalRate.toFixed(2)}</option>`;

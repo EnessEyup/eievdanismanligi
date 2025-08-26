@@ -1303,24 +1303,41 @@
                 }
                 const prevMonthStr = String(prevMonthForRate).padStart(2, '0');
                 
-                options = ''; // Reset options
+                let optionsArray = [];
                 
                 // 1. Yasal Oran: TÜFE 12 Aylık Ortalama - seçili
                 if (tufeRates[prevYearForRate] && tufeRates[prevYearForRate][prevMonthStr]) {
                     const tufeRate = tufeRates[prevYearForRate][prevMonthStr];
                     legalRate = tufeRate;
                     legalRateText = `%${tufeRate.toFixed(2)} (TÜFE 12 Aylık Ortalama - Yasal)`;
-                    options = `<option value="${tufeRate}|TÜFE 12 Aylık Ortalama - Yasal" selected>Yasal Oran: %${tufeRate.toFixed(2)} (TÜFE 12 Aylık Ortalama - Yasal)</option>`;
+                    optionsArray.push({
+                        value: `${tufeRate}|TÜFE 12 Aylık Ortalama - Yasal`,
+                        text: `Yasal Oran: %${tufeRate.toFixed(2)} (TÜFE 12 Aylık Ortalama - Yasal)`,
+                        selected: true
+                    });
                 }
                 
                 // 2. ÜFE 12 Aylık Ortalama
                 if (ufeRates[prevYearForRate] && ufeRates[prevYearForRate][prevMonthStr]) {
                     const ufeRate = ufeRates[prevYearForRate][prevMonthStr];
-                    options += `<option value="${ufeRate}|ÜFE 12 Aylık Ortalama">ÜFE 12 Aylık Ortalama - %${ufeRate.toFixed(2)}</option>`;
+                    optionsArray.push({
+                        value: `${ufeRate}|ÜFE 12 Aylık Ortalama`,
+                        text: `ÜFE 12 Aylık Ortalama - %${ufeRate.toFixed(2)}`,
+                        selected: false
+                    });
                 }
                 
                 // 3. Özel Oran
-                options += '<option value="custom|Özel Oran">Özel Oran</option>';
+                optionsArray.push({
+                    value: 'custom|Özel Oran',
+                    text: 'Özel Oran',
+                    selected: false
+                });
+                
+                // Seçenekleri HTML'e dönüştür
+                options = optionsArray.map(opt => 
+                    `<option value="${opt.value}"${opt.selected ? ' selected' : ''}>${opt.text}</option>`
+                ).join('');
             } else if (yearNum === 2023) {
                 // 2023: Full year 25% limit for housing
                 const baseRate = calculateYearlyAverage(tufeRates, '2022');
@@ -1559,7 +1576,7 @@
                         </div>
                         <div class="form-group">
                             <label>Sözleşmenizde Yazılan Artış Oranı</label>
-                            <select id="rateSelect_${year}" onchange="handleRateSelection(${year})">
+                            <select id="rateSelect_${year}" onchange="handleRateSelection(${year})" class="rate-select">
                                 ${rateOptions}
                             </select>
                             <div class="help-text">Sözleşmede belirlenen kira artış oranı türü</div>

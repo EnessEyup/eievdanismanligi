@@ -1045,7 +1045,8 @@
                             <label for="contractDate">Sözleşme Başlangıç Tarihi</label>
                             <input type="date" id="contractDate" required 
                                    aria-label="Kira sözleşmesinin başlangıç tarihini seçin"
-                                   aria-describedby="contractDateHelp">
+                                   aria-describedby="contractDateHelp"
+                                   oninput="previewRateOptions()">
                             <div class="help-text" id="contractDateHelp">Kira sözleşmenizin başladığı tarihi seçin</div>
                         </div>
                         <div class="form-group">
@@ -1060,7 +1061,8 @@
                         <label for="propertyType">Gayrimenkul Türü</label>
                         <select id="propertyType" required 
                                 aria-label="Kiraladığınız gayrimenkulün türünü seçin"
-                                aria-describedby="propertyTypeHelp">
+                                aria-describedby="propertyTypeHelp"
+                                oninput="previewRateOptions()">
                             <option value="">Gayrimenkul türünü seçin</option>
                             <option value="konut">Konut (Mesken)</option>
                             <option value="isyeri">İşyeri (Ticari)</option>
@@ -1068,6 +1070,9 @@
                         </select>
                         <div class="help-text" id="propertyTypeHelp">Konut için özel yasal sınırlar geçerli olabilir</div>
                     </div>
+                    
+                    <div id="ratePreview" class="form-section" style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 8px;"></div>
+                    
                     <button type="button" class="btn" onclick="nextStep()" 
                             aria-label="Ödeme bilgileri adımına geç">
                         <i class="fas fa-arrow-right"></i> Devam Et
@@ -1226,6 +1231,33 @@
         };
 
         let calculationData = [];
+        
+        function previewRateOptions() {
+            const contractDateEl = document.getElementById('contractDate');
+            const propertyTypeEl = document.getElementById('propertyType');
+            const previewDiv = document.getElementById('ratePreview');
+            
+            if (!contractDateEl.value || !propertyTypeEl.value) {
+                if (previewDiv) previewDiv.innerHTML = '';
+                return;
+            }
+            
+            const contractDate = new Date(contractDateEl.value);
+            const year = contractDate.getFullYear();
+            const propertyType = propertyTypeEl.value;
+            
+            const rateOptions = getRateOptions(year, contractDate, propertyType);
+            
+            if (previewDiv) {
+                previewDiv.innerHTML = `
+                    <h4>${year} Yılı Artış Seçenekleri (Önizleme)</h4>
+                    <select disabled>
+                        <option>Artış türünü seçin...</option>
+                        ${rateOptions}
+                    </select>
+                `;
+            }
+        }
 
         function getRateOptions(year, contractDate, propertyType) {
             alert('getRateOptions çağrıldı! Year: ' + year + ' Type: ' + typeof year);

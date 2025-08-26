@@ -1303,6 +1303,9 @@
                 }
                 const prevMonthStr = String(prevMonthForRate).padStart(2, '0');
                 
+                // Artış türünü seçin... seçeneği
+                options = '<option value="">Artış türünü seçin...</option>';
+                
                 // 1. Yasal Oran: TÜFE 12 Aylık Ortalama - seçili
                 if (tufeRates[prevYearForRate] && tufeRates[prevYearForRate][prevMonthStr]) {
                     const tufeRate = tufeRates[prevYearForRate][prevMonthStr];

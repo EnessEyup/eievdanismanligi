@@ -1232,6 +1232,9 @@
 
         let calculationData = [];
         
+        // Chart için gerekli değişkenler (hata düzeltmesi)
+        const years = Object.keys(tufeRates).map(year => parseInt(year)).sort();
+        
         function previewRateOptions() {
             alert('previewRateOptions çağrıldı!');
             const contractDateEl = document.getElementById('contractDate');

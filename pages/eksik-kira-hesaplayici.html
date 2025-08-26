@@ -54,14 +54,23 @@
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="preload" href="../assets/images/logo.png" as="image">
     
-    <!-- Google Analytics - Gerçek ID ile değiştirilecek -->
-    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZTP30XELNP"></script>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZTP30XELNP"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-ZTP30XELNP');
-    </script> -->
+        gtag('config', 'G-ZTP30XELNP', {
+            enhanced_measurement: {
+                scrolls: true,
+                outbound_clicks: true,
+                site_search: true,
+                video_engagement: true,
+                file_downloads: true,
+                page_changes: true
+            }
+        });
+    </script>
     
     <!-- Google Search Console - Gerçek verification code ile değiştirilecek -->
     <!-- <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE" /> -->
@@ -1146,38 +1155,72 @@
     </div>
 
     <script>
-        // TÜFE 12 aylık ortalama verileri (gerçek TÜİK verileri)
+        // TÜFE rates from main calculator - EXACT MATCH
         const tufeRates = {
-            2012: { '01': 9.22, '02': 10.12, '03': 10.45, '04': 10.55, '05': 9.97, '06': 9.35, '07': 8.89, '08': 8.56, '09': 8.29, '10': 8.17, '11': 7.80, '12': 6.99 },
-            2013: { '01': 6.51, '02': 6.13, '03': 6.13, '04': 6.15, '05': 6.65, '06': 7.14, '07': 7.48, '08': 7.72, '09': 7.60, '10': 7.59, '11': 7.48, '12': 7.49 },
-            2014: { '01': 7.72, '02': 7.77, '03': 8.03, '04': 8.34, '05': 8.76, '06': 8.94, '07': 8.85, '08': 8.99, '09': 8.97, '10': 8.90, '11': 8.81, '12': 8.85 },
-            2015: { '01': 8.80, '02': 8.57, '03': 8.24, '04': 7.97, '05': 7.84, '06': 7.89, '07': 7.94, '08': 7.86, '09': 7.86, '10': 7.71, '11': 7.57, '12': 7.67 },
-            2016: { '01': 7.86, '02': 8.46, '03': 8.31, '04': 7.78, '05': 7.47, '06': 7.33, '07': 7.59, '08': 7.89, '09': 7.84, '10': 7.77, '11': 7.46, '12': 7.78 },
-            2017: { '01': 8.39, '02': 9.18, '03': 10.39, '04': 10.96, '05': 10.90, '06': 10.85, '07': 10.68, '08': 10.75, '09': 11.02, '10': 11.90, '11': 12.98, '12': 11.92 },
-            2018: { '01': 10.42, '02': 10.26, '03': 10.23, '04': 10.85, '05': 12.15, '06': 15.39, '07': 15.85, '08': 17.90, '09': 24.52, '10': 25.24, '11': 21.62, '12': 20.30 },
-            2019: { '01': 19.67, '02': 19.67, '03': 19.71, '04': 19.50, '05': 18.71, '06': 16.65, '07': 16.86, '08': 15.01, '09': 9.26, '10': 8.55, '11': 10.56, '12': 11.84 },
-            2020: { '01': 12.15, '02': 12.37, '03': 11.86, '04': 10.94, '05': 11.39, '06': 11.76, '07': 11.76, '08': 11.77, '09': 11.75, '10': 11.89, '11': 14.03, '12': 14.60 },
-            2021: { '01': 14.97, '02': 15.61, '03': 16.19, '04': 17.14, '05': 16.59, '06': 17.53, '07': 18.95, '08': 19.25, '09': 19.58, '10': 19.89, '11': 21.31, '12': 36.08 },
-            2022: { '01': 48.69, '02': 54.44, '03': 61.14, '04': 69.97, '05': 73.50, '06': 78.62, '07': 79.60, '08': 80.21, '09': 83.45, '10': 85.51, '11': 84.39, '12': 64.27 },
-            2023: { '01': 57.68, '02': 55.18, '03': 50.51, '04': 43.68, '05': 39.59, '06': 38.21, '07': 47.83, '08': 58.94, '09': 61.53, '10': 61.36, '11': 61.98, '12': 64.77 },
-            2024: { '01': 57.68, '02': 59.94, '03': 61.98, '04': 62.25, '05': 61.78, '06': 60.56, '07': 58.40, '08': 55.94, '09': 53.91, '10': 51.94, '11': 49.94, '12': 47.57 },
-            2025: { '01': 56.35, '02': 53.83, '03': 51.26, '04': 48.73, '05': 45.80, '06': 43.23, '07': 40.00 }
+            '2012': { '01': 10.61, '02': 10.43, '03': 10.43, '04': 11.14, '05': 8.28, '06': 8.87, '07': 9.07, '08': 8.88, '09': 9.19, '10': 7.80, '11': 6.37, '12': 6.16 },
+            '2013': { '01': 7.31, '02': 7.03, '03': 7.29, '04': 6.13, '05': 6.51, '06': 8.30, '07': 8.88, '08': 8.17, '09': 7.88, '10': 7.71, '11': 7.32, '12': 7.40 },
+            '2014': { '01': 7.75, '02': 7.89, '03': 8.39, '04': 9.38, '05': 9.66, '06': 9.16, '07': 9.32, '08': 9.54, '09': 8.86, '10': 8.96, '11': 9.15, '12': 8.17 },
+            '2015': { '01': 7.24, '02': 7.55, '03': 7.61, '04': 7.91, '05': 8.09, '06': 7.20, '07': 6.81, '08': 7.14, '09': 7.95, '10': 7.58, '11': 8.10, '12': 8.81 },
+            '2016': { '01': 9.58, '02': 8.78, '03': 7.46, '04': 6.57, '05': 6.58, '06': 7.64, '07': 8.79, '08': 8.05, '09': 7.28, '10': 7.16, '11': 7.00, '12': 8.53 },
+            '2017': { '01': 9.22, '02': 10.13, '03': 11.29, '04': 11.87, '05': 11.72, '06': 10.90, '07': 9.79, '08': 10.68, '09': 11.20, '10': 11.90, '11': 12.98, '12': 11.92 },
+            '2018': { '01': 10.35, '02': 10.26, '03': 10.23, '04': 10.85, '05': 12.15, '06': 15.39, '07': 15.85, '08': 17.90, '09': 24.52, '10': 25.24, '11': 21.62, '12': 20.30 },
+            '2019': { '01': 20.35, '02': 19.67, '03': 19.71, '04': 19.50, '05': 18.71, '06': 15.72, '07': 16.65, '08': 15.01, '09': 9.26, '10': 8.55, '11': 10.56, '12': 11.84 },
+            '2020': { '01': 12.15, '02': 12.37, '03': 11.86, '04': 10.94, '05': 11.39, '06': 12.62, '07': 11.76, '08': 11.77, '09': 11.75, '10': 11.89, '11': 14.03, '12': 14.60 },
+            '2021': { '01': 14.97, '02': 15.61, '03': 16.19, '04': 17.14, '05': 16.59, '06': 17.53, '07': 18.95, '08': 19.25, '09': 19.58, '10': 19.89, '11': 21.31, '12': 36.08 },
+            '2022': { '01': 48.69, '02': 54.44, '03': 61.14, '04': 69.97, '05': 73.50, '06': 78.62, '07': 79.60, '08': 80.21, '09': 83.45, '10': 85.51, '11': 84.39, '12': 64.27 },
+            '2023': { '01': 57.68, '02': 55.18, '03': 50.51, '04': 43.68, '05': 39.59, '06': 38.21, '07': 47.83, '08': 58.94, '09': 61.53, '10': 61.36, '11': 61.98, '12': 64.77 },
+            '2024': { '01': 57.68, '02': 59.94, '03': 61.98, '04': 62.25, '05': 61.78, '06': 71.60, '07': 61.78, '08': 51.97, '09': 49.38, '10': 48.58, '11': 47.09, '12': 44.38 },
+            '2025': { '01': 56.35, '02': 39.05, '03': 38.10, '04': 37.86, '05': 35.41, '06': 35.05, '07': 33.52 }
         };
 
-        // ÜFE/Yİ-ÜFE 12 aylık ortalama verileri (gerçek TÜİK verileri)
+        // ÜFE rates from main calculator - EXACT MATCH
         const ufeRates = {
-            2012: { '01': 12.94, '02': 11.86, '03': 10.52, '04': 9.23, '05': 8.25, '06': 7.03, '07': 5.95, '08': 5.31, '09': 4.44, '10': 3.66, '11': 3.05, '12': 2.45 },
-            2013: { '01': 2.17, '02': 2.52, '03': 3.08, '04': 3.27, '05': 3.51, '06': 4.06, '07': 4.68, '08': 5.22, '09': 5.65, '10': 5.94, '11': 5.98, '12': 6.97 },
-            2014: { '01': 7.84, '02': 8.57, '03': 8.86, '04': 9.01, '05': 8.95, '06': 8.95, '07': 8.68, '08': 8.51, '09': 8.37, '10': 8.36, '11': 8.61, '12': 6.36 },
-            2015: { '01': 4.59, '02': 3.41, '03': 3.11, '04': 3.65, '05': 4.14, '06': 4.26, '07': 4.51, '08': 4.98, '09': 5.34, '10': 5.42, '11': 5.26, '12': 5.71 },
-            2016: { '01': 6.29, '02': 6.67, '03': 6.29, '04': 5.68, '05': 5.58, '06': 5.64, '07': 5.64, '08': 5.21, '09': 4.85, '10': 4.52, '11': 4.58, '12': 5.07 },
-            2017: { '01': 5.68, '02': 6.59, '03': 7.32, '04': 8.04, '05': 8.80, '06': 9.61, '07': 9.94, '08': 10.51, '09': 11.23, '10': 12.89, '11': 15.68, '12': 15.48 },
-            2018: { '01': 13.79, '02': 13.12, '03': 13.57, '04': 14.12, '05': 15.28, '06': 18.54, '07': 21.40, '08': 24.40, '09': 33.28, '10': 46.15, '11': 45.01, '12': 33.64 }
+            '2012': { '01': 11.13, '02': 9.15, '03': 8.22, '04': 7.65, '05': 8.06, '06': 6.44, '07': 6.13, '08': 4.56, '09': 4.03, '10': 2.57, '11': 3.60, '12': 2.45 },
+            '2013': { '01': 1.88, '02': 1.84, '03': 2.30, '04': 1.70, '05': 2.17, '06': 5.23, '07': 6.61, '08': 6.38, '09': 6.23, '10': 6.77, '11': 5.67, '12': 6.97 },
+            '2014': { '01': 10.72, '02': 12.40, '03': 12.31, '04': 12.98, '05': 11.28, '06': 9.75, '07': 9.46, '08': 9.88, '09': 9.84, '10': 10.10, '11': 8.36, '12': 6.36 },
+            '2015': { '01': 3.28, '02': 3.10, '03': 3.41, '04': 4.80, '05': 6.52, '06': 6.73, '07': 5.62, '08': 6.21, '09': 6.92, '10': 5.74, '11': 5.25, '12': 5.71 },
+            '2016': { '01': 5.94, '02': 4.47, '03': 3.80, '04': 2.87, '05': 3.25, '06': 3.41, '07': 3.96, '08': 3.03, '09': 1.78, '10': 2.84, '11': 6.41, '12': 9.94 },
+            '2017': { '01': 13.69, '02': 15.36, '03': 16.09, '04': 16.37, '05': 15.26, '06': 14.87, '07': 15.45, '08': 16.34, '09': 16.28, '10': 17.28, '11': 17.30, '12': 15.47 },
+            '2018': { '01': 12.14, '02': 13.71, '03': 14.28, '04': 16.37, '05': 20.16, '06': 23.71, '07': 25.00, '08': 32.13, '09': 46.15, '10': 45.01, '11': 38.54, '12': 33.64 },
+            '2019': { '01': 32.93, '02': 29.59, '03': 29.64, '04': 30.12, '05': 28.71, '06': 25.04, '07': 21.66, '08': 13.45, '09': 2.45, '10': 1.70, '11': 4.26, '12': 7.36 },
+            '2020': { '01': 8.84, '02': 9.26, '03': 8.50, '04': 6.71, '05': 5.53, '06': 6.17, '07': 8.33, '08': 11.53, '09': 14.33, '10': 18.20, '11': 23.11, '12': 25.15 },
+            '2021': { '01': 26.16, '02': 27.09, '03': 31.20, '04': 35.17, '05': 38.33, '06': 42.89, '07': 44.92, '08': 45.52, '09': 43.96, '10': 46.31, '11': 54.62, '12': 79.89 },
+            '2022': { '01': 93.53, '02': 105.01, '03': 114.97, '04': 121.82, '05': 132.16, '06': 138.31, '07': 144.61, '08': 143.75, '09': 151.50, '10': 157.69, '11': 136.02, '12': 97.72 },
+            '2023': { '01': 86.46, '02': 76.61, '03': 62.45, '04': 52.11, '05': 40.76, '06': 40.42, '07': 44.50, '08': 49.41, '09': 47.44, '10': 39.39, '11': 42.25, '12': 44.22 },
+            '2024': { '01': 44.20, '02': 47.29, '03': 51.47, '04': 55.66, '05': 57.68, '06': 50.09, '07': 41.37, '08': 35.75, '09': 33.09, '10': 32.24, '11': 29.47, '12': 28.52 },
+            '2025': { '01': 24.19, '02': 25.35, '03': 23.13, '04': 22.50, '05': 23.50, '06': 25.21, '07': 27.20 }
         };
 
-        // Maksimum yasal oran referansı (hesaplama için)
-        const inflationRates = {
-            2014: 8.85, 2015: 7.67, 2016: 7.78, 2017: 11.92, 2018: 20.30, 2019: 11.84, 2020: 14.60, 2021: 36.08, 2022: 64.27, 2023: 64.77, 2024: 47.57, 2025: 40.00
+        // Yİ-ÜFE rates from main calculator - EXACT MATCH
+        const yiufeRates = {
+            '2019': { '01': 28.15, '02': 25.95, '03': 24.52, '04': 22.89, '05': 20.35, '06': 16.47, '07': 12.58, '08': 8.95, '09': 5.23, '10': 2.47, '11': 1.85, '12': 7.36 },
+            '2020': { '01': 12.94, '02': 16.67, '03': 15.04, '04': 4.13, '05': -7.67, '06': -12.78, '07': -10.43, '08': -6.95, '09': -3.15, '10': 0.27, '11': 4.08, '12': 25.15 },
+            '2021': { '01': 26.16, '02': 31.20, '03': 39.27, '04': 68.50, '05': 89.05, '06': 116.73, '07': 138.34, '08': 145.09, '09': 151.37, '10': 158.54, '11': 210.64, '12': 79.89 },
+            '2022': { '01': 105.01, '02': 108.53, '03': 115.90, '04': 121.82, '05': 132.16, '06': 138.34, '07': 138.76, '08': 145.68, '09': 151.64, '10': 158.35, '11': 167.05, '12': 54.62 },
+            '2023': { '01': 86.46, '02': 76.61, '03': 62.45, '04': 52.11, '05': 40.76, '06': 40.42, '07': 44.50, '08': 49.41, '09': 47.44, '10': 39.39, '11': 42.25, '12': 44.22 },
+            '2024': { '01': 44.20, '02': 47.29, '03': 51.47, '04': 55.66, '05': 57.68, '06': 50.09, '07': 41.37, '08': 35.75, '09': 33.09, '10': 32.24, '11': 29.47, '12': 28.52 },
+            '2025': { '01': 27.20, '02': 25.21, '03': 23.50, '04': 22.50, '05': 23.13, '07': 24.19 }
+        };
+
+        // Ana hesaplayıcıdaki fixed averages (yasal oranlar)
+        const legalRatesByYear = {
+            // 2012-2018: ÜFE fixed averages
+            2012: 6.09,   // 2011 ÜFE average for 2012
+            2013: 4.52,   // 2012 ÜFE average for 2013
+            2014: 10.25,  // 2013 ÜFE average for 2014
+            2015: 5.28,   // 2014 ÜFE average for 2015
+            2016: 4.33,   // 2015 ÜFE average for 2016
+            2017: 15.76,  // 2016 ÜFE average for 2017
+            2018: 27.01,  // 2017 ÜFE average for 2018
+            // 2019-2022: TÜFE fixed averages
+            2019: 15.18,  // 2018 TÜFE average for 2019
+            2020: 12.28,  // 2019 TÜFE average for 2020
+            2021: 19.60,  // 2020 TÜFE average for 2021
+            2022: 72.31,  // 2021 TÜFE average for 2022
+            // 2023: Calculated TÜFE (will be calculated)
+            // 2024-2025: TÜFE fixed averages
+            2024: 62.45,  // 2023 TÜFE average for 2024
+            2025: 36.70   // 2024 TÜFE average for 2025
         };
 
         let calculationData = [];
@@ -1187,124 +1230,231 @@
             const contractMonth = String(contractDate.getMonth() + 1).padStart(2, '0');
             let options = '';
 
-            // Yasal oran - dönemsel olarak belirlenir
-            let legalRateText = '';
+            // Ana hesaplayıcıdaki tam mantık - yasal oran belirleme
+            let legalRateText = 'TÜFE (Yasal oran)';
             let legalRate = 0;
             
+            // Ana hesaplayıcıdaki updateRatePreferenceOptions mantığı
             if (year >= 2012 && year <= 2018) {
-                // 2012-2018: Konut için Yİ-ÜFE 12A ort., İşyeri için TBK 344 erteli
-                if (propertyType === 'konut') {
-                    if (ufeRates[prevYear] && ufeRates[prevYear][contractMonth]) {
-                        legalRate = ufeRates[prevYear][contractMonth];
-                        legalRateText = `Yİ-ÜFE 12A ort. (Konut)`;
+                // 2012-2018 Period: Use fixed ÜFE averages for legal rate
+                legalRate = legalRatesByYear[year] || 0;
+                if (legalRate > 0) {
+                    legalRateText = `%${legalRate.toFixed(2)} (Yasal Sınır - ÜFE 12 Aylık Ortalama)`;
+                }
+            } else if (year >= 2019 && year <= 2021) {
+                // 2019-2021 Period: TÜFE starts from 18 January 2019
+                legalRate = legalRatesByYear[year] || 0;
+                if (legalRate > 0) {
+                    legalRateText = `%${legalRate.toFixed(2)} (TÜFE - 12 aylık ortalama)`;
+                }
+            } else if (year === 2022) {
+                // 2022: TÜFE, but 25% limit starts from June 11
+                const baseRate = legalRatesByYear[year] || 0;
+                const increaseDate = new Date(contractDate);
+                increaseDate.setFullYear(year);
+                const limitStartDate = new Date('2022-06-11');
+                
+                if (propertyType === 'konut' && increaseDate >= limitStartDate) {
+                    legalRate = Math.min(baseRate, 25);
+                    if (legalRate < baseRate) {
+                        legalRateText = `%${legalRate.toFixed(2)} (Yasal Sınır - 2022)`;
+                    } else {
+                        legalRateText = `%${legalRate.toFixed(2)} (TÜFE - 12 aylık ortalama)`;
                     }
                 } else {
-                    legalRateText = 'TBK 344 erteli (İşyeri)';
-                    legalRate = 15;
+                    legalRate = baseRate;
+                    legalRateText = `%${legalRate.toFixed(2)} (TÜFE - 12 aylık ortalama)`;
                 }
-            } else if (year >= 2019 && year <= 2022) {
-                // 2019-10.06.2022: Konut + İşyeri: TÜFE 12A ort. üst sınır yok
-                if (tufeRates[prevYear] && tufeRates[prevYear][contractMonth]) {
-                    legalRate = tufeRates[prevYear][contractMonth];
-                    legalRateText = `TÜFE 12A ort. üst sınır yok`;
+            } else if (year === 2023) {
+                // 2023: Full year 25% limit for housing
+                const baseRate = calculateYearlyAverage(tufeRates, '2022');
+                if (propertyType === 'konut') {
+                    legalRate = Math.min(baseRate, 25);
+                    legalRateText = `%${legalRate.toFixed(2)} (Yasal Sınır - 2022-2024)`;
+                } else {
+                    legalRate = baseRate;
+                    legalRateText = `%${legalRate.toFixed(2)} (TÜFE - 12 aylık ortalama)`;
                 }
-            } else if (year >= 2022 && year <= 2024) {
-                // 11.06.2022-01.07.2024: Konutta %25 üst sınır, İşyeri TÜFE 12A ort.
-                if (tufeRates[prevYear] && tufeRates[prevYear][contractMonth]) {
-                    const tufeRate = tufeRates[prevYear][contractMonth];
-                    const rentIncreaseDate = new Date(contractDate);
-                    rentIncreaseDate.setFullYear(year);
-                    const limitStart = new Date('2022-06-11');
-                    const limitEnd = new Date('2024-07-01');
-                    
-                    if (propertyType === 'konut' && rentIncreaseDate >= limitStart && rentIncreaseDate < limitEnd) {
-                        legalRate = Math.min(tufeRate, 25);
-                        legalRateText = legalRate < tufeRate ? 
-                            `%25 üst sınır (TÜFE daha düşükse TÜFE)` : 
-                            `TÜFE 12A ort. (Konut)`;
-                    } else {
-                        legalRate = tufeRate;
-                        legalRateText = propertyType === 'konut' ? 
-                            `TÜFE 12A ort. (Konut)` : `TÜFE 12A ort. (İşyeri)`;
-                    }
+            } else if (year === 2024) {
+                // 2024: 25% limit until July 1, then back to TÜFE
+                const baseRate = legalRatesByYear[year] || 0;
+                const increaseDate = new Date(contractDate);
+                increaseDate.setFullYear(year);
+                const limitEndDate = new Date('2024-07-01');
+                
+                if (propertyType === 'konut' && increaseDate < limitEndDate) {
+                    legalRate = Math.min(baseRate, 25);
+                    legalRateText = `%${legalRate.toFixed(2)} (Yasal Sınır - 2022-2024)`;
+                } else {
+                    legalRate = baseRate;
+                    legalRateText = `%${legalRate.toFixed(2)} (TÜFE - 12 aylık ortalama)`;
                 }
             } else if (year >= 2025) {
-                // 02.07.2024-2025: Konut + İşyeri: TÜFE 12A ort. (geçici %25 sınırı bitti)
-                if (tufeRates[prevYear] && tufeRates[prevYear][contractMonth]) {
-                    legalRate = tufeRates[prevYear][contractMonth];
-                    legalRateText = `TÜFE 12A ort. (geçici %25 sınırı bitti)`;
+                // 2025+: Back to TÜFE for all
+                legalRate = legalRatesByYear[year] || calculateYearlyAverage(tufeRates, prevYear.toString());
+                if (legalRate > 0) {
+                    legalRateText = `%${legalRate.toFixed(2)} (TÜFE - 12 aylık ortalama)`;
                 }
             }
 
-            // Yasal oran seçeneği ekle
-            if (legalRateText && legalRate > 0) {
-                options += `<option value="${legalRate}|${legalRateText}" selected>Yasal Oran: ${legalRateText} - %${legalRate.toFixed(2)}</option>`;
-            }
-
-            // Yİ-ÜFE (12 aylık ortalama) - 2018'e kadar mevcut
-            if (ufeRates[prevYear] && ufeRates[prevYear][contractMonth]) {
-                const rate = ufeRates[prevYear][contractMonth];
-                options += `<option value="${rate}|Yİ-ÜFE (12 aylık ortalama)">Yİ-ÜFE (12 aylık ortalama) - %${rate.toFixed(2)}</option>`;
-            } else {
-                // 2019+ için de ÜFE seçeneği olsun (varsayılan değer)
-                const defaultUfe = prevYear >= 2019 ? 15 : 10;
-                options += `<option value="${defaultUfe}|Yİ-ÜFE (12 aylık ortalama)">Yİ-ÜFE (12 aylık ortalama) - %${defaultUfe.toFixed(2)} (tahmini)</option>`;
-            }
-
-            // TÜFE (bir önceki ay) - Her yıl için
-            const contractMonthNum = contractDate.getMonth() + 1; // 1-12 arası
-            let prevMonthForTufe, prevYearForTufe;
-            if (contractMonthNum === 1) {
-                prevMonthForTufe = 12;
-                prevYearForTufe = year - 1;
-            } else {
-                prevMonthForTufe = contractMonthNum - 1;
-                prevYearForTufe = year;
-            }
-            const prevMonthStr = String(prevMonthForTufe).padStart(2, '0');
-            
-            if (tufeRates[prevYearForTufe] && tufeRates[prevYearForTufe][prevMonthStr]) {
-                const rate = tufeRates[prevYearForTufe][prevMonthStr];
-                options += `<option value="${rate}|TÜFE (bir önceki ay)">TÜFE (bir önceki ay) - %${rate.toFixed(2)}</option>`;
-            }
-
-            // Yİ-ÜFE (Geçen yılın aynı ayına göre) - Her yıl için
-            if (ufeRates[prevYear] && ufeRates[prevYear][contractMonth]) {
-                const rate = ufeRates[prevYear][contractMonth];
-                options += `<option value="${rate}|Yİ-ÜFE (Geçen yılın aynı ayına göre)">Yİ-ÜFE (Geçen yılın aynı ayına göre) - %${rate.toFixed(2)}</option>`;
-            } else {
-                const defaultUfe = prevYear >= 2019 ? 20 : 8;
-                options += `<option value="${defaultUfe}|Yİ-ÜFE (Geçen yılın aynı ayına göre)">Yİ-ÜFE (Geçen yılın aynı ayına göre) - %${defaultUfe.toFixed(2)} (tahmini)</option>`;
-            }
-
-            // (TÜFE + Yİ-ÜFE)/2 (12 aylık ortalama) - Her yıl için
-            if (tufeRates[prevYear] && tufeRates[prevYear][contractMonth]) {
-                const tufeRate = tufeRates[prevYear][contractMonth];
-                let ufeRate;
-                if (ufeRates[prevYear] && ufeRates[prevYear][contractMonth]) {
-                    ufeRate = ufeRates[prevYear][contractMonth];
+            // Ana hesaplayıcıdaki dönemlere göre seçenekleri filtrele
+            if (year >= 2012 && year <= 2018) {
+                // 2012-2018 Period: Limited options
+                
+                // Yasal oran seçeneği
+                if (legalRateText && legalRate > 0) {
+                    options += `<option value="${legalRate}|${legalRateText}" selected>${legalRateText} - %${legalRate.toFixed(2)}</option>`;
+                }
+                
+                // TÜFE (bir önceki ay)
+                const contractMonthNum = contractDate.getMonth() + 1;
+                let prevMonthForTufe, prevYearForTufe;
+                if (contractMonthNum === 1) {
+                    prevMonthForTufe = 12;
+                    prevYearForTufe = year - 1;
                 } else {
-                    ufeRate = prevYear >= 2019 ? 15 : 8;
+                    prevMonthForTufe = contractMonthNum - 1;
+                    prevYearForTufe = year;
                 }
-                const avgRate = (tufeRate + ufeRate) / 2;
-                options += `<option value="${avgRate}|(TÜFE + Yİ-ÜFE)/2 (12 aylık ortalama)">(TÜFE + Yİ-ÜFE)/2 (12 aylık ortalama) - %${avgRate.toFixed(2)}</option>`;
-            }
-
-            // (TÜFE + Yİ-ÜFE)/2 (Geçen yılın aynı ayına göre) - Her yıl için
-            if (tufeRates[prevYear] && tufeRates[prevYear][contractMonth]) {
-                const tufeRate = tufeRates[prevYear][contractMonth];
-                let ufeRate;
-                if (ufeRates[prevYear] && ufeRates[prevYear][contractMonth]) {
-                    ufeRate = ufeRates[prevYear][contractMonth];
+                const prevMonthStr = String(prevMonthForTufe).padStart(2, '0');
+                if (tufeRates[prevYearForTufe] && tufeRates[prevYearForTufe][prevMonthStr]) {
+                    const rate = tufeRates[prevYearForTufe][prevMonthStr];
+                    options += `<option value="${rate}|TÜFE (bir önceki ay)">TÜFE (bir önceki ay) - %${rate.toFixed(2)}</option>`;
+                }
+                
+                // ÜFE (bir önceki ay) 
+                if (ufeRates[prevYearForTufe] && ufeRates[prevYearForTufe][prevMonthStr]) {
+                    const rate = ufeRates[prevYearForTufe][prevMonthStr];
+                    options += `<option value="${rate}|ÜFE (bir önceki ay)">ÜFE (bir önceki ay) - %${rate.toFixed(2)}</option>`;
+                }
+                
+                // Özel Oran
+                options += '<option value="custom|Özel Oran">Özel Oran</option>';
+                
+            } else if (year >= 2019 && year <= 2021) {
+                // 2019-2021 Period: Specific options
+                
+                // Yasal oran seçeneği
+                if (legalRateText && legalRate > 0) {
+                    options += `<option value="${legalRate}|${legalRateText}" selected>${legalRateText} - %${legalRate.toFixed(2)}</option>`;
+                }
+                
+                // TÜFE (bir önceki ay)
+                const contractMonthNum = contractDate.getMonth() + 1;
+                let prevMonthForTufe, prevYearForTufe;
+                if (contractMonthNum === 1) {
+                    prevMonthForTufe = 12;
+                    prevYearForTufe = year - 1;
                 } else {
-                    ufeRate = prevYear >= 2019 ? 20 : 10;
+                    prevMonthForTufe = contractMonthNum - 1;
+                    prevYearForTufe = year;
                 }
-                const avgRate = (tufeRate + ufeRate) / 2;
-                options += `<option value="${avgRate}|(TÜFE + Yİ-ÜFE)/2 (Geçen yılın aynı ayına göre)">(TÜFE + Yİ-ÜFE)/2 (Geçen yılın aynı ayına göre) - %${avgRate.toFixed(2)}</option>`;
+                const prevMonthStr = String(prevMonthForTufe).padStart(2, '0');
+                if (tufeRates[prevYearForTufe] && tufeRates[prevYearForTufe][prevMonthStr]) {
+                    const rate = tufeRates[prevYearForTufe][prevMonthStr];
+                    options += `<option value="${rate}|TÜFE (bir önceki ay)">TÜFE (bir önceki ay) - %${rate.toFixed(2)}</option>`;
+                }
+                
+                // ÜFE (bir önceki ay)
+                if (ufeRates[prevYearForTufe] && ufeRates[prevYearForTufe][prevMonthStr]) {
+                    const rate = ufeRates[prevYearForTufe][prevMonthStr];
+                    options += `<option value="${rate}|ÜFE (bir önceki ay)">ÜFE (bir önceki ay) - %${rate.toFixed(2)}</option>`;
+                }
+                
+                // Yİ-ÜFE (12 aylık ortalama)
+                if (yiufeRates[prevYear] && yiufeRates[prevYear][contractMonth]) {
+                    const rate = yiufeRates[prevYear][contractMonth];
+                    options += `<option value="${rate}|Yİ-ÜFE (12 aylık ortalama)">Yİ-ÜFE (12 aylık ortalama) - %${rate.toFixed(2)}</option>`;
+                }
+                
+                // Özel Oran
+                options += '<option value="custom|Özel Oran">Özel Oran</option>';
+                
+            } else if ((year === 2022) || (year === 2023) || (year === 2024)) {
+                // 2022-2024 Period (%25 limit period)
+                
+                // Yasal oran seçeneği
+                if (legalRateText && legalRate > 0) {
+                    options += `<option value="${legalRate}|${legalRateText}" selected>${legalRateText} - %${legalRate.toFixed(2)}</option>`;
+                }
+                
+                // ÜFE (bir önceki ay)
+                const contractMonthNum = contractDate.getMonth() + 1;
+                let prevMonthForTufe, prevYearForTufe;
+                if (contractMonthNum === 1) {
+                    prevMonthForTufe = 12;
+                    prevYearForTufe = year - 1;
+                } else {
+                    prevMonthForTufe = contractMonthNum - 1;
+                    prevYearForTufe = year;
+                }
+                const prevMonthStr = String(prevMonthForTufe).padStart(2, '0');
+                if (ufeRates[prevYearForTufe] && ufeRates[prevYearForTufe][prevMonthStr]) {
+                    const rate = ufeRates[prevYearForTufe][prevMonthStr];
+                    options += `<option value="${rate}|ÜFE (bir önceki ay)">ÜFE (bir önceki ay) - %${rate.toFixed(2)}</option>`;
+                }
+                
+                // TÜFE (bir önceki ay)
+                if (tufeRates[prevYearForTufe] && tufeRates[prevYearForTufe][prevMonthStr]) {
+                    const rate = tufeRates[prevYearForTufe][prevMonthStr];
+                    options += `<option value="${rate}|TÜFE (bir önceki ay)">TÜFE (bir önceki ay) - %${rate.toFixed(2)}</option>`;
+                }
+                
+                // TÜFE (12 aylık ortalama)
+                const tufeAvg = calculateYearlyAverage(tufeRates, prevYear);
+                if (tufeAvg > 0) {
+                    options += `<option value="${tufeAvg}|TÜFE (12 aylık ortalama)">TÜFE (12 aylık ortalama) - %${tufeAvg.toFixed(2)}</option>`;
+                }
+                
+                // Özel Oran
+                options += '<option value="custom|Özel Oran">Özel Oran</option>';
+                
+            } else if (year >= 2025) {
+                // 2025+ Period: Same as 2019-2021 options
+                
+                // Yasal oran seçeneği (2025 için 36.70)
+                if (legalRateText && legalRate > 0) {
+                    options += `<option value="${legalRate}|${legalRateText}" selected>${legalRateText} - %${legalRate.toFixed(2)}</option>`;
+                }
+                
+                // TÜFE (bir önceki ay)
+                const contractMonthNum = contractDate.getMonth() + 1;
+                let prevMonthForTufe, prevYearForTufe;
+                if (contractMonthNum === 1) {
+                    prevMonthForTufe = 12;
+                    prevYearForTufe = year - 1;
+                } else {
+                    prevMonthForTufe = contractMonthNum - 1;
+                    prevYearForTufe = year;
+                }
+                const prevMonthStr = String(prevMonthForTufe).padStart(2, '0');
+                if (tufeRates[prevYearForTufe] && tufeRates[prevYearForTufe][prevMonthStr]) {
+                    const rate = tufeRates[prevYearForTufe][prevMonthStr];
+                    options += `<option value="${rate}|TÜFE (bir önceki ay)">TÜFE (bir önceki ay) - %${rate.toFixed(2)}</option>`;
+                }
+                
+                // ÜFE (bir önceki ay)
+                if (ufeRates[prevYearForTufe] && ufeRates[prevYearForTufe][prevMonthStr]) {
+                    const rate = ufeRates[prevYearForTufe][prevMonthStr];
+                    options += `<option value="${rate}|ÜFE (bir önceki ay)">ÜFE (bir önceki ay) - %${rate.toFixed(2)}</option>`;
+                }
+                
+                // Yİ-ÜFE (12 aylık ortalama)
+                if (yiufeRates[prevYear] && yiufeRates[prevYear][contractMonth]) {
+                    const rate = yiufeRates[prevYear][contractMonth];
+                    options += `<option value="${rate}|Yİ-ÜFE (12 aylık ortalama)">Yİ-ÜFE (12 aylık ortalama) - %${rate.toFixed(2)}</option>`;
+                }
+                
+                // Özel Oran
+                options += '<option value="custom|Özel Oran">Özel Oran</option>';
+                
+            } else {
+                // Other periods: Show all options (fallback)
+                if (legalRateText && legalRate > 0) {
+                    options += `<option value="${legalRate}|${legalRateText}" selected>Yasal Oran: ${legalRateText} - %${legalRate.toFixed(2)}</option>`;
+                }
+                options += '<option value="custom|Özel Oran">Özel Oran</option>';
             }
-
-            // Özel Oran - Her zaman mevcut
-            options += '<option value="custom|Özel Oran">Özel Oran</option>';
 
             return options;
         }
@@ -1467,38 +1617,60 @@
                     selectedRateType = 'Manuel Giriş';
                 }
                 
-                // O yılki maksimum yasal oran hesapla (bilgi amaçlı)
-                const prevYear = year - 1;
-                const contractMonth = String(contractDate.getMonth() + 1).padStart(2, '0');
+                // Ana hesaplayıcıdaki yasal oran hesaplama mantığı
                 let maxLegalRate = 0;
                 let rateType = '';
                 
-                if (year <= 2018) {
-                    // 2018 ve öncesi ÜFE dönemi - 12 aylık ortalama kullan
-                    const ufeRate = calculateYearlyAverage(ufeRates, prevYear);
-                    if (ufeRate > 0) {
-                        maxLegalRate = ufeRate;
-                        rateType = 'ÜFE';
-                    }
-                } else {
-                    // 2019 ve sonrası TÜFE dönemi - 12 aylık ortalama kullan
-                    const tufeRate = calculateYearlyAverage(tufeRates, prevYear);
+                if (year >= 2012 && year <= 2018) {
+                    // 2012-2018 Period: Use fixed ÜFE averages
+                    maxLegalRate = legalRatesByYear[year] || 0;
+                    rateType = 'ÜFE 12A ort.';
+                } else if (year >= 2019 && year <= 2021) {
+                    // 2019-2021 Period: Use fixed TÜFE averages
+                    maxLegalRate = legalRatesByYear[year] || 0;
+                    rateType = 'TÜFE 12A ort.';
+                } else if (year === 2022) {
+                    // 2022: TÜFE with potential 25% limit from June 11
+                    const baseRate = legalRatesByYear[year] || 0;
+                    const checkDate = new Date(contractDate);
+                    checkDate.setFullYear(year);
+                    const limitStartDate = new Date('2022-06-11');
                     
-                    if (tufeRate > 0) {
-                        // Konut %25 sınırı kontrolü (11 Haziran 2022 - 1 Temmuz 2024)
-                        const limitStartDate = new Date('2022-06-11');
-                        const limitEndDate = new Date('2024-07-01');
-                        const checkDate = new Date(contractDate);
-                        checkDate.setFullYear(year);
-                        
-                        if (propertyType === 'konut' && checkDate >= limitStartDate && checkDate < limitEndDate) {
-                            maxLegalRate = Math.min(tufeRate, 25);
-                            rateType = maxLegalRate < tufeRate ? '%25 Sınırı' : 'TÜFE';
-                        } else {
-                            maxLegalRate = tufeRate;
-                            rateType = 'TÜFE';
-                        }
+                    if (propertyType === 'konut' && checkDate >= limitStartDate) {
+                        maxLegalRate = Math.min(baseRate, 25);
+                        rateType = maxLegalRate < baseRate ? '%25 Sınırı' : 'TÜFE 12A ort.';
+                    } else {
+                        maxLegalRate = baseRate;
+                        rateType = 'TÜFE 12A ort.';
                     }
+                } else if (year === 2023) {
+                    // 2023: Full year 25% limit for housing
+                    const baseRate = calculateYearlyAverage(tufeRates, '2022');
+                    if (propertyType === 'konut') {
+                        maxLegalRate = Math.min(baseRate, 25);
+                        rateType = '%25 Sınırı';
+                    } else {
+                        maxLegalRate = baseRate;
+                        rateType = 'TÜFE 12A ort.';
+                    }
+                } else if (year === 2024) {
+                    // 2024: 25% limit until July 1, then back to TÜFE
+                    const baseRate = legalRatesByYear[year] || 0;
+                    const checkDate = new Date(contractDate);
+                    checkDate.setFullYear(year);
+                    const limitEndDate = new Date('2024-07-01');
+                    
+                    if (propertyType === 'konut' && checkDate < limitEndDate) {
+                        maxLegalRate = Math.min(baseRate, 25);
+                        rateType = '%25 Sınırı';
+                    } else {
+                        maxLegalRate = baseRate;
+                        rateType = 'TÜFE 12A ort.';
+                    }
+                } else if (year >= 2025) {
+                    // 2025+: Back to TÜFE for all
+                    maxLegalRate = legalRatesByYear[year] || calculateYearlyAverage(tufeRates, (year-1).toString());
+                    rateType = 'TÜFE 12A ort.';
                 }
                 
                 if (maxLegalRate === 0) {

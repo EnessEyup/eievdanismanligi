@@ -1254,8 +1254,8 @@
                     legalRate = ufeRates[prevYearForRate][prevMonthStr];
                     legalRateText = `%${legalRate.toFixed(2)} (ÜFE 12 Aylık Ortalama - Yasal)`;
                 }
-            } else if (year >= 2019 && year <= 2021) {
-                // 2019-2021 Period: TÜFE yasal oran (bir önceki ayın değeri)
+            } else if (year >= 2019 && year <= 2022) {
+                // 2019-2022 Period: TÜFE yasal oran (bir önceki ayın değeri)
                 const contractMonthNum = contractDate.getMonth() + 1;
                 let prevMonthForRate, prevYearForRate;
                 if (contractMonthNum === 1) {
@@ -1270,37 +1270,6 @@
                 if (tufeRates[prevYearForRate] && tufeRates[prevYearForRate][prevMonthStr]) {
                     legalRate = tufeRates[prevYearForRate][prevMonthStr];
                     legalRateText = `%${legalRate.toFixed(2)} (TÜFE 12 Aylık Ortalama - Yasal)`;
-                }
-            } else if (year === 2022) {
-                // 2022: TÜFE yasal oran (bir önceki ayın değeri), but 25% limit starts from June 11
-                const contractMonthNum = contractDate.getMonth() + 1;
-                let prevMonthForRate, prevYearForRate;
-                if (contractMonthNum === 1) {
-                    prevMonthForRate = 12;
-                    prevYearForRate = year - 1;
-                } else {
-                    prevMonthForRate = contractMonthNum - 1;
-                    prevYearForRate = year;
-                }
-                const prevMonthStr = String(prevMonthForRate).padStart(2, '0');
-                
-                if (tufeRates[prevYearForRate] && tufeRates[prevYearForRate][prevMonthStr]) {
-                    const baseRate = tufeRates[prevYearForRate][prevMonthStr];
-                    const increaseDate = new Date(contractDate);
-                    increaseDate.setFullYear(year);
-                    const limitStartDate = new Date('2022-06-11');
-                    
-                    if (propertyType === 'konut' && increaseDate >= limitStartDate) {
-                        legalRate = Math.min(baseRate, 25);
-                        if (legalRate < baseRate) {
-                            legalRateText = `%${legalRate.toFixed(2)} (Yasal Sınır - 2022)`;
-                        } else {
-                            legalRateText = `%${legalRate.toFixed(2)} (TÜFE 12 Aylık Ortalama - Yasal)`;
-                        }
-                    } else {
-                        legalRate = baseRate;
-                        legalRateText = `%${legalRate.toFixed(2)} (TÜFE 12 Aylık Ortalama - Yasal)`;
-                    }
                 }
             } else if (year === 2023) {
                 // 2023: Full year 25% limit for housing
@@ -1365,38 +1334,8 @@
                 // 3. Özel Oran
                 options += '<option value="custom|Özel Oran">Özel Oran</option>';
                 
-            } else if (year >= 2019 && year <= 2021) {
-                // 2019-2021 Period: TÜFE yasal, ÜFE alternatif
-                
-                // Bir önceki ay hesaplama
-                const contractMonthNum = contractDate.getMonth() + 1;
-                let prevMonthForRate, prevYearForRate;
-                if (contractMonthNum === 1) {
-                    prevMonthForRate = 12;
-                    prevYearForRate = year - 1;
-                } else {
-                    prevMonthForRate = contractMonthNum - 1;
-                    prevYearForRate = year;
-                }
-                const prevMonthStr = String(prevMonthForRate).padStart(2, '0');
-                
-                // 1. Yasal Oran: TÜFE 12 Aylık Ortalama - seçili
-                if (tufeRates[prevYearForRate] && tufeRates[prevYearForRate][prevMonthStr]) {
-                    const tufeRate = tufeRates[prevYearForRate][prevMonthStr];
-                    options += `<option value="${tufeRate}|TÜFE 12 Aylık Ortalama - Yasal" selected>TÜFE 12 Aylık Ortalama - Yasal - %${tufeRate.toFixed(2)}</option>`;
-                }
-                
-                // 2. ÜFE 12 Aylık Ortalama
-                if (ufeRates[prevYearForRate] && ufeRates[prevYearForRate][prevMonthStr]) {
-                    const ufeRate = ufeRates[prevYearForRate][prevMonthStr];
-                    options += `<option value="${ufeRate}|ÜFE 12 Aylık Ortalama">ÜFE 12 Aylık Ortalama - %${ufeRate.toFixed(2)}</option>`;
-                }
-                
-                // 3. Özel Oran
-                options += '<option value="custom|Özel Oran">Özel Oran</option>';
-                
-            } else if (year === 2022) {
-                // 2022 Period: TÜFE yasal, ÜFE alternatif (same as 2019-2021 options)
+            } else if (year >= 2019 && year <= 2022) {
+                // 2019-2022 Period: TÜFE yasal, ÜFE alternatif
                 
                 // Bir önceki ay hesaplama
                 const contractMonthNum = contractDate.getMonth() + 1;
@@ -1693,8 +1632,8 @@
                         maxLegalRate = ufeRates[prevYearForRate][prevMonthStr];
                         rateType = 'ÜFE 12A ort. - Yasal';
                     }
-                } else if (year >= 2019 && year <= 2021) {
-                    // 2019-2021 Period: Use previous month's TÜFE rate
+                } else if (year >= 2019 && year <= 2022) {
+                    // 2019-2022 Period: Use previous month's TÜFE rate
                     const contractMonthNum = contractDate.getMonth() + 1;
                     let prevMonthForRate, prevYearForRate;
                     if (contractMonthNum === 1) {
@@ -1709,33 +1648,6 @@
                     if (tufeRates[prevYearForRate] && tufeRates[prevYearForRate][prevMonthStr]) {
                         maxLegalRate = tufeRates[prevYearForRate][prevMonthStr];
                         rateType = 'TÜFE 12A ort. - Yasal';
-                    }
-                } else if (year === 2022) {
-                    // 2022: Use previous month's TÜFE rate with potential 25% limit from June 11
-                    const contractMonthNum = contractDate.getMonth() + 1;
-                    let prevMonthForRate, prevYearForRate;
-                    if (contractMonthNum === 1) {
-                        prevMonthForRate = 12;
-                        prevYearForRate = year - 1;
-                    } else {
-                        prevMonthForRate = contractMonthNum - 1;
-                        prevYearForRate = year;
-                    }
-                    const prevMonthStr = String(prevMonthForRate).padStart(2, '0');
-                    
-                    if (tufeRates[prevYearForRate] && tufeRates[prevYearForRate][prevMonthStr]) {
-                        const baseRate = tufeRates[prevYearForRate][prevMonthStr];
-                        const checkDate = new Date(contractDate);
-                        checkDate.setFullYear(year);
-                        const limitStartDate = new Date('2022-06-11');
-                        
-                        if (propertyType === 'konut' && checkDate >= limitStartDate) {
-                            maxLegalRate = Math.min(baseRate, 25);
-                            rateType = maxLegalRate < baseRate ? '%25 Sınırı' : 'TÜFE 12A ort. - Yasal';
-                        } else {
-                            maxLegalRate = baseRate;
-                            rateType = 'TÜFE 12A ort. - Yasal';
-                        }
                     }
                 } else if (year === 2023) {
                     // 2023: Full year 25% limit for housing

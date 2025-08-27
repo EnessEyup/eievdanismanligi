@@ -1012,15 +1012,9 @@
                             <select id="rate-preference" name="ratePreference" required aria-label="Kira artış tercihini seçiniz">
                                 <option value="">Seçiniz...</option>
                                 <option value="tufe">TÜFE (Yasal oran)</option>
-                                <option value="tufe-monthly">Sadece TÜFE (Önceki ay)</option>
-                                <option value="ufe-monthly">Sadece ÜFE (Önceki ay)</option>
-                                <option value="yiufe-12">Yİ-ÜFE (12 aylık ortalama)</option>
-                                <option value="tufe-12">TÜFE (12 aylık ortalama)</option>
+                                <option value="ufe-monthly">ÜFE 12 Aylık Ortalama</option>
+                                <option value="tufe-12">TÜFE 12 Aylık Ortalama</option>
                                 <option value="custom">Özel Oran</option>
-                                <option value="tufe-past">TÜFE (Geçen yılın aynı ayına göre)</option>
-                                <option value="yiufe-past">Yİ-ÜFE (Geçen yılın aynı ayına göre)</option>
-                                <option value="tufe-yiufe-12">(TÜFE + Yİ-ÜFE)/2 (12 aylık ortalama)</option>
-                                <option value="tufe-yiufe-past">(TÜFE + Yİ-ÜFE)/2 (Geçen yılın aynı ayına göre)</option>
                             </select>
                             <p class="help-text">Kira artış hesaplama yöntemini seçiniz</p>
                         </div>
@@ -1137,8 +1131,8 @@
         document.addEventListener('DOMContentLoaded', function() {
             // TÜFE Rates by Year/Month
             const tufeRates = {
-                '2012': { '01': 10.61, '02': 10.43, '03': 10.43, '04': 11.14, '05': 8.28, '06': 8.87, '07': 9.07, '08': 8.88, '09': 9.19, '10': 7.80, '11': 6.37, '12': 6.16 },
-                '2013': { '01': 7.31, '02': 7.03, '03': 7.29, '04': 6.13, '05': 6.51, '06': 8.30, '07': 8.88, '08': 8.17, '09': 7.88, '10': 7.71, '11': 7.32, '12': 7.40 },
+                '2012': { '01': 6.95, '02': 7.48, '03': 8.02, '04': 8.59, '05': 8.68, '06': 8.89, '07': 9.11, '08': 9.29, '09': 9.53, '10': 9.53, '11': 9.26, '12': 8.89 },
+                '2013': { '01': 8.62, '02': 8.33, '03': 8.08, '04': 7.66, '05': 7.51, '06': 7.47, '07': 7.47, '08': 7.42, '09': 7.32, '10': 7.32, '11': 7.39, '12': 7.49 },
                 '2014': { '01': 7.75, '02': 7.89, '03': 8.39, '04': 9.38, '05': 9.66, '06': 9.16, '07': 9.32, '08': 9.54, '09': 8.86, '10': 8.96, '11': 9.15, '12': 8.17 },
                 '2015': { '01': 7.24, '02': 7.55, '03': 7.61, '04': 7.91, '05': 8.09, '06': 7.20, '07': 6.81, '08': 7.14, '09': 7.95, '10': 7.58, '11': 8.10, '12': 8.81 },
                 '2016': { '01': 9.58, '02': 8.78, '03': 7.46, '04': 6.57, '05': 6.58, '06': 7.64, '07': 8.79, '08': 8.05, '09': 7.28, '10': 7.16, '11': 7.00, '12': 8.53 },
@@ -1155,8 +1149,8 @@
 
             // ÜFE Rates (for 2012-2025 period)
             const ufeRates = {
-                '2012': { '01': 11.13, '02': 9.15, '03': 8.22, '04': 7.65, '05': 8.06, '06': 6.44, '07': 6.13, '08': 4.56, '09': 4.03, '10': 2.57, '11': 3.60, '12': 2.45 },
-                '2013': { '01': 1.88, '02': 1.84, '03': 2.30, '04': 1.70, '05': 2.17, '06': 5.23, '07': 6.61, '08': 6.38, '09': 6.23, '10': 6.77, '11': 5.67, '12': 6.97 },
+                '2012': { '01': 11.11, '02': 10.96, '03': 10.79, '04': 10.72, '05': 10.57, '06': 10.24, '07': 9.88, '08': 9.33, '09': 8.65, '10': 7.80, '11': 6.98, '12': 6.09 },
+                '2013': { '01': 5.33, '02': 4.72, '03': 4.23, '04': 3.74, '05': 3.27, '06': 3.18, '07': 3.23, '08': 3.39, '09': 3.58, '10': 3.93, '11': 4.10, '12': 4.48 },
                 '2014': { '01': 10.72, '02': 12.40, '03': 12.31, '04': 12.98, '05': 11.28, '06': 9.75, '07': 9.46, '08': 9.88, '09': 9.84, '10': 10.10, '11': 8.36, '12': 6.36 },
                 '2015': { '01': 3.28, '02': 3.10, '03': 3.41, '04': 4.80, '05': 6.52, '06': 6.73, '07': 5.62, '08': 6.21, '09': 6.92, '10': 5.74, '11': 5.25, '12': 5.71 },
                 '2016': { '01': 5.94, '02': 4.47, '03': 3.80, '04': 2.87, '05': 3.25, '06': 3.41, '07': 3.96, '08': 3.03, '09': 1.78, '10': 2.84, '11': 6.41, '12': 9.94 },
@@ -1232,7 +1226,7 @@
                     // 2012-2018 Period: Use fixed ÜFE averages for legal rate
                     const ufeAverages = {
                         '2011': 6.09,  // For 2012 legal rate
-                        '2012': 4.52,  // For 2013 legal rate
+                        '2012': 9.26,  // For 2013 legal rate
                         '2013': 10.25, // For 2014 legal rate
                         '2014': 5.28,  // For 2015 legal rate
                         '2015': 4.33,  // For 2016 legal rate
@@ -1332,8 +1326,52 @@
                     const value = option.value;
                     
                     if (year >= 2012 && year <= 2018) {
-                        // 2012-2018 Period: Show only specific options
-                        if (value === 'tufe' || value === 'tufe-monthly' || value === 'ufe-monthly' || value === 'custom' || value === '') {
+                        // 2012-2018 Period: Show ÜFE 12 Aylık Ortalama (Yasal), TÜFE 12 Aylık Ortalama and Özel Oran
+                        const prevYear = (parseInt(year) - 1).toString();
+                        
+                        // Calculate ÜFE 12-month average
+                        let ufeAvg = 0;
+                        let ufeCount = 0;
+                        if (ufeRates[prevYear]) {
+                            for (let month in ufeRates[prevYear]) {
+                                ufeAvg += ufeRates[prevYear][month];
+                                ufeCount++;
+                            }
+                            if (ufeCount > 0) {
+                                ufeAvg = ufeAvg / ufeCount;
+                            }
+                        }
+                        
+                        // Calculate TÜFE 12-month average
+                        let tufeAvg = 0;
+                        let tufeCount = 0;
+                        if (tufeRates[prevYear]) {
+                            for (let month in tufeRates[prevYear]) {
+                                tufeAvg += tufeRates[prevYear][month];
+                                tufeCount++;
+                            }
+                            if (tufeCount > 0) {
+                                tufeAvg = tufeAvg / tufeCount;
+                            }
+                        }
+                        
+                        // Update option texts and visibility
+                        allOptions.forEach(option => {
+                            const value = option.value;
+                            if (value === 'tufe') {
+                                option.textContent = `ÜFE 12 Aylık Ortalama - Yasal Oran - %${ufeAvg.toFixed(2)}`;
+                                option.style.display = 'block';
+                            } else if (value === 'tufe-12') {
+                                option.textContent = `TÜFE 12 Aylık Ortalama - %${tufeAvg.toFixed(2)}`;
+                                option.style.display = 'block';
+                            } else if (value === 'custom' || value === '') {
+                                option.style.display = 'block';
+                            } else {
+                                option.style.display = 'none';
+                            }
+                        });
+                        
+                        if (value === 'tufe-12' || value === 'ufe-monthly' || value === 'custom' || value === '') {
                             option.style.display = 'block';
                         } else {
                             option.style.display = 'none';
@@ -1427,27 +1465,28 @@
                 // Calculate rate based on preference
                 switch (ratePreference) {
                     case 'tufe':
-                        // For legal rate, determine which index to use based on period
-                        const legalRateYear = (parseInt(year) - 1).toString();
-                        
                         if (parseInt(year) >= 2012 && parseInt(year) <= 2018) {
-                            // 2012-2018 Period: Use fixed ÜFE averages for legal rate
-                            const ufeAverages = {
-                                '2011': 6.09,  // For 2012 legal rate
-                                '2012': 4.52,  // For 2013 legal rate
-                                '2013': 10.25, // For 2014 legal rate
-                                '2014': 5.28,  // For 2015 legal rate
-                                '2015': 4.33,  // For 2016 legal rate
-                                '2016': 15.76, // For 2017 legal rate
-                                '2017': 27.01  // For 2018 legal rate
-                            };
+                            // 2012-2018 Period: Use 12-month average ÜFE rate as legal rate
+                            const prevYear = (parseInt(year) - 1).toString();
+                            let ufeAvg = 0;
+                            let ufeCount = 0;
                             
-                            calculatedRate = ufeAverages[legalRateYear] || 0;
-                            if (calculatedRate === 0) {
-                                showError('Seçilen tarih için ÜFE verisi bulunamadı.');
+                            if (ufeRates[prevYear]) {
+                                for (let month in ufeRates[prevYear]) {
+                                    ufeAvg += ufeRates[prevYear][month];
+                                    ufeCount++;
+                                }
+                                if (ufeCount > 0) {
+                                    calculatedRate = ufeAvg / ufeCount;
+                                    rateSource = 'ÜFE 12 Aylık Ortalama - Yasal Oran';
+                                } else {
+                                    showError('Seçilen yıl için ÜFE verisi bulunamadı.');
+                                    return;
+                                }
+                            } else {
+                                showError('Seçilen yıl için ÜFE verisi bulunamadı.');
                                 return;
                             }
-                            rateSource = 'ÜFE (Yasal oran - 12 aylık ortalama)';
                         } else if (parseInt(year) >= 2019 && parseInt(year) <= 2022) {
                             // 2019-2022 Period: Use fixed TÜFE averages for legal rate
                             const tufeAverages = {

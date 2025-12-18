@@ -19,9 +19,7 @@ passport.deserializeUser(async (id, done) => {
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: process.env.NODE_ENV === 'production'
-        ? "https://eievdanismanligi.onrender.com/auth/google/callback"
-        : "http://localhost:3000/auth/google/callback"
+    callbackURL: process.env.GOOGLE_CALLBACK_URL || "http://localhost:3000/auth/google/callback"
 }, async (accessToken, refreshToken, profile, done) => {
     try {
         // Kullanıcının zaten var olup olmadığını kontrol et
